@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broke Compass — Zarar Mahmud's Travel Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #212f3f;   /* base background — deep indigo denim */
+    --ink-2:      #273a4a;   /* slightly lifted background band */
+    --bark:       #2c4155;   /* card / panel background — washed denim */
+    --bark-2:     #35506a;   /* card hover / raised panel — lighter wash */
+    --parchment:  #e8e2d1;   /* primary text — warm bone, never pure white */
+    --parchment-dim: #93a2ae; /* secondary text — cool denim-grey */
+    --brass:      #d98f3f;   /* primary accent — gold contrast-stitch thread */
+    --rust:       #b5651d;   /* secondary accent — copper rivet */
+    --moss:       #d98f3f;   /* alias, kept for clarity */
+    --line:       rgba(232,226,209,0.14);
+    --shadow:     rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(45deg, rgba(232,226,209,0.025) 0px, rgba(232,226,209,0.025) 1px, transparent 1px, transparent 5px),
+      radial-gradient(ellipse 900px 500px at 12% -10%, rgba(217,143,63,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(181,101,29,0.09), transparent 55%),
+      var(--ink);
+    color:var(--parchment);
+    font-family:'Source Serif 4', serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* subtle paper grain, ambient not decorative-for-its-own-sake */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:1;
+    opacity:0.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a{ color:var(--brass); }
+  ::selection{ background:var(--rust); color:var(--parchment); }
+
+  :focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:3px;
+  }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 28px; position:relative; z-index:2; }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:20;
+    background:linear-gradient(var(--ink) 78%, transparent);
+    padding:22px 0 14px;
+  }
+  .nav-row{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:1.32rem;
+    letter-spacing:0.01em;
+    color:var(--parchment);
+    text-decoration:none;
+  }
+  .brand svg{ width:30px; height:30px; flex-shrink:0; }
+  nav.links{ display:flex; gap:30px; }
+  nav.links a{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--parchment-dim);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    padding-bottom:3px;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  nav.links a:hover{ color:var(--brass); border-color:var(--brass); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:64px 0 70px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .topo{
+    position:absolute; inset:0;
+    z-index:0;
+    opacity:0.16;
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns:1.3fr 0.9fr;
+    gap:40px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--rust);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:""; width:26px; height:1px; background:var(--rust);
+  }
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.05;
+    margin:0 0 20px;
+    color:var(--parchment);
+  }
+  h1.title em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--brass);
+  }
+  .lede{
+    font-size:1.08rem;
+    color:var(--parchment-dim);
+    max-width:46ch;
+    margin:0 0 28px;
+  }
+  .hero-meta{
+    display:flex; gap:22px; flex-wrap:wrap;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.74rem;
+    color:var(--parchment-dim);
+    letter-spacing:0.03em;
+  }
+  .hero-meta span{ display:flex; align-items:center; gap:7px; }
+  .hero-meta svg{ width:15px; height:15px; opacity:0.8; }
+
+  .compass-wrap{
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .compass-wrap svg{ width:100%; max-width:300px; height:auto; }
+  @media (prefers-reduced-motion: no-preference){
+    .needle{ animation:settle 9s ease-in-out infinite; transform-origin:150px 150px; }
+  }
+  @keyframes settle{
+    0%,100%{ transform:rotate(-3deg); }
+    50%{ transform:rotate(4deg); }
+  }
+
+  /* ---------- SECTION LABELS ---------- */
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin:70px 0 30px;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.7rem;
+    margin:0;
+    color:var(--parchment);
+  }
+  .section-head .count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--parchment-dim);
+    letter-spacing:0.08em;
+  }
+
+  /* ---------- ENTRY LIST ---------- */
+  .entries{ display:flex; flex-direction:column; gap:22px; margin-bottom:60px; }
+
+  .entry{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    height:300px;
+    overflow:hidden;
+    background:var(--bark);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:24px 26px;
+    text-decoration:none;
+    color:inherit;
+    transition:background .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .entry:hover{
+    background:var(--bark-2);
+    transform:translateY(-2px);
+    border-color:rgba(217,143,63,0.45);
+  }
+  .entry-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:14px;
+    flex-shrink:0;
+  }
+  .stamp{
+    width:48px; height:48px;
+    border-radius:10px;
+    border:2px dashed rgba(232,226,209,0.4);
+    box-shadow: inset 0 0 0 4px var(--ink), inset 0 0 0 5px rgba(217,143,63,0.5);
+    background:
+      radial-gradient(circle 2.2px at 8px 8px, var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.2px at calc(100% - 8px) 8px, var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.2px at 8px calc(100% - 8px), var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.2px at calc(100% - 8px) calc(100% - 8px), var(--rust) 99%, transparent 100%),
+      var(--bark);
+    display:flex; align-items:center; justify-content:center;
+    transform:rotate(-4deg);
+    flex-shrink:0;
+    transition:transform .25s ease;
+  }
+  .entry:hover .stamp{ transform:rotate(-2deg); }
+  .stamp svg{ width:22px; height:22px; }
+
+  .entry-heading{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:0;
+  }
+  .entry-heading h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.2rem;
+    margin:0;
+    color:var(--parchment);
+    line-height:1.28;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .entry-location{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.66rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--parchment-dim);
+    display:-webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .entry-body{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+  }
+  .entry-tags{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+    flex-shrink:0;
+  }
+  .entry-tag-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.64rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--brass);
+    border:1px dashed rgba(217,143,63,0.4);
+    border-radius:20px;
+    padding:3px 10px;
+  }
+  .entry-tag-pill svg{ width:12px; height:12px; flex-shrink:0; }
+  .entry-tag{ display:none; } /* deprecated, replaced by column sectioning */
+
+  .entries-split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px;
+    align-items:start;
+    margin-bottom:60px;
+  }
+  .entries-col .entries{ margin-bottom:0; }
+  .col-head{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.74rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--parchment-dim);
+    padding-bottom:12px;
+    margin-bottom:20px;
+    border-bottom:1px dashed var(--line);
+  }
+  .col-head svg{ width:16px; height:16px; flex-shrink:0; }
+  .col-head.is-gallery{
+    color:var(--brass);
+    border-bottom-color:rgba(217,143,63,0.4);
+  }
+  @media (max-width:800px){
+    .entries-split{ grid-template-columns:1fr; gap:50px; }
+  }
+  .entry-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--brass);
+    margin-bottom:10px;
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .entry-excerpt{
+    color:var(--parchment-dim);
+    font-size:0.97rem;
+    max-width:none;
+    margin:0;
+    flex:1;
+    display:-webkit-box;
+    -webkit-line-clamp:5;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  @media (max-width:640px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .compass-wrap{ order:-1; max-width:200px; margin:0 auto 20px; }
+  }
+
+  /* ---------- DIVIDER ---------- */
+  .route-divider{
+    display:flex; align-items:center; gap:16px;
+    margin:64px 0;
+    color:var(--parchment-dim);
+  }
+  .route-divider .line{ flex:1; height:1px; background:var(--line); }
+  .route-divider svg{ width:22px; height:22px; opacity:0.7; }
+
+  /* ---------- ABOUT / SIGNOFF ---------- */
+  .about{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    margin-bottom:70px;
+    align-items:start;
+  }
+  .about h2{
+    font-family:'Fraunces', serif;
+    font-size:1.7rem;
+    margin:0 0 16px;
+  }
+  .about p{ color:var(--parchment-dim); }
+  .about .quote{
+    border-left:2px solid var(--rust);
+    padding-left:20px;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.15rem;
+    color:var(--parchment);
+    font-weight:300;
+  }
+  @media (max-width:700px){ .about{ grid-template-columns:1fr; } }
+
+  /* ---------- SOCIALS / CONTACT ---------- */
+  .social-row{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    margin-bottom:70px;
+  }
+  .social-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--parchment-dim);
+  }
+  .social-badge{
+    width:64px; height:64px;
+    border-radius:50%;
+    border:2px dashed rgba(232,226,209,0.4);
+    box-shadow: inset 0 0 0 5px var(--ink), inset 0 0 0 6px rgba(217,143,63,0.5);
+    background:
+      radial-gradient(circle 2.5px at 9px 9px, var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.5px at calc(100% - 9px) 9px, var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.5px at 9px calc(100% - 9px), var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.5px at calc(100% - 9px) calc(100% - 9px), var(--rust) 99%, transparent 100%),
+      var(--bark);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .social-badge svg{ width:26px; height:26px; }
+  .social-item:hover .social-badge{
+    transform:translateY(-4px) rotate(-4deg);
+    background:
+      radial-gradient(circle 2.5px at 9px 9px, var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.5px at calc(100% - 9px) 9px, var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.5px at 9px calc(100% - 9px), var(--rust) 99%, transparent 100%),
+      radial-gradient(circle 2.5px at calc(100% - 9px) calc(100% - 9px), var(--rust) 99%, transparent 100%),
+      var(--bark-2);
+  }
+  .social-item .social-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    transition:color .2s ease;
+  }
+  .social-item:hover .social-label{ color:var(--brass); }
+
+  .footer-socials{
+    justify-content:center;
+    margin-bottom:30px;
+  }
+  .footer-socials .social-badge{ width:48px; height:48px; }
+  .footer-socials .social-badge svg{ width:20px; height:20px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:34px 0 50px;
+  }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:14px;
+  }
+  .foot-row svg{ width:26px; height:26px; opacity:0.6; }
+  .foot-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    color:var(--parchment-dim);
+    letter-spacing:0.04em;
+  }
+  .thanks-note{
+    text-align:center;
+    margin:18px 0 0;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    color:var(--parchment-dim);
+  }
+  .ai-note{
+    text-align:center;
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:300;
+    font-size:0.72rem;
+    line-height:1.7;
+    color:var(--parchment-dim);
+    opacity:0.75;
+    max-width:52ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="nav">
+    <div class="nav-row">
+      <a href="#top" class="brand">
+        <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#d98f3f" stroke-width="2"/><path d="M20 8 L23 20 L20 32 L17 20 Z" fill="#d98f3f"/><circle cx="20" cy="20" r="2.4" fill="#e8e2d1"/></svg>
+        Broke Compass
+      </a>
+      <nav class="links">
+        <a href="#entries">Journal</a>
+        <a href="#routes">Routes</a>
+        <a href="#about">About</a>
+        <a href="#contact">Find Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <svg class="topo" viewBox="0 0 1080 420" preserveAspectRatio="none">
+      <g stroke="#d98f3f" stroke-width="1.2">
+        <line x1="-100" y1="480" x2="500" y2="-80" opacity="0.55"/>
+        <line x1="-40" y1="480" x2="560" y2="-80" opacity="0.45"/>
+        <line x1="20" y1="480" x2="620" y2="-80" opacity="0.35"/>
+        <line x1="80" y1="480" x2="680" y2="-80" opacity="0.28"/>
+        <line x1="140" y1="480" x2="740" y2="-80" opacity="0.22"/>
+        <line x1="560" y1="480" x2="1160" y2="-80" opacity="0.5"/>
+        <line x1="620" y1="480" x2="1220" y2="-80" opacity="0.4"/>
+        <line x1="680" y1="480" x2="1280" y2="-80" opacity="0.3"/>
+        <line x1="740" y1="480" x2="1340" y2="-80" opacity="0.24"/>
+        <line x1="800" y1="480" x2="1400" y2="-80" opacity="0.18"/>
+      </g>
+    </svg>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Field notes, chronically over budget</div>
+        <h1 class="title">Planned like it matters. <em>Spent like it doesn't.</em></h1>
+        <p class="lede">Every trip starts with a spreadsheet and ends with an empty wallet. In between: routes mapped down to the last connection, backups built in, all of it spent anyway chasing whatever's actually in front of me. Written up once I'm home, doing math I'd rather not.</p>
+        <div class="hero-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="#d98f3f" stroke-width="1.6"><path d="M12 2v20M2 12h20"/></svg> 4 dispatches</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="#d98f3f" stroke-width="1.6"><circle cx="12" cy="12" r="9"/></svg> 3 countries</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="#d98f3f" stroke-width="1.6"><path d="M4 20 L12 4 L20 20"/></svg> broke, every single time</span>
+        </div>
+      </div>
+      <div class="compass-wrap">
+        <svg viewBox="0 0 300 300" fill="none">
+          <circle cx="150" cy="150" r="118" stroke="#d98f3f" stroke-width="1.4" opacity="0.6"/>
+          <circle cx="150" cy="150" r="95" stroke="#e8e2d1" stroke-width="1" opacity="0.25"/>
+          <g stroke="#e8e2d1" stroke-width="1" opacity="0.4">
+            <line x1="150" y1="32" x2="150" y2="52"/>
+            <line x1="150" y1="248" x2="150" y2="268"/>
+            <line x1="32" y1="150" x2="52" y2="150"/>
+            <line x1="248" y1="150" x2="268" y2="150"/>
+          </g>
+          <text x="150" y="26" text-anchor="middle" fill="#e8e2d1" font-family="JetBrains Mono" font-size="13" opacity="0.7">N</text>
+          <text x="150" y="282" text-anchor="middle" fill="#e8e2d1" font-family="JetBrains Mono" font-size="13" opacity="0.5">S</text>
+          <text x="20" y="155" text-anchor="middle" fill="#e8e2d1" font-family="JetBrains Mono" font-size="13" opacity="0.5">W</text>
+          <text x="280" y="155" text-anchor="middle" fill="#e8e2d1" font-family="JetBrains Mono" font-size="13" opacity="0.5">E</text>
+          <g class="needle">
+            <path d="M150 60 L163 150 L150 240 L137 150 Z" fill="#d98f3f"/>
+            <path d="M150 60 L163 150 L150 150 Z" fill="#f0b072"/>
+            <path d="M150 240 L137 150 L150 150 Z" fill="#b5651d"/>
+          </g>
+          <circle cx="150" cy="150" r="8" fill="#212f3f" stroke="#e8e2d1" stroke-width="1.4"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="entries">
+    <div class="section-head">
+      <h2>Latest from the road</h2>
+      <span class="count">Written up, or just left to the photos</span>
+    </div>
+
+    <div class="entries-split">
+
+      <div class="entries-col">
+        <div class="col-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4-1 12-12-3-3L4 17z"/><path d="M14 6l3 3"/></svg>
+          Field Notes
+        </div>
+        <div class="entries">
+
+          <a class="entry" href="#">
+            <div class="entry-head">
+              <div class="stamp">
+                <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2"><path d="M6 34 L16 12 L24 28 L30 16 L42 34 Z"/></svg>
+              </div>
+              <div class="entry-heading">
+                <h3>Pursuit of the Foothills of Annapurna</h3>
+                <div class="entry-location">Kathmandu · Jhinu Danda · Chhomrong · Deurali, Nepal</div>
+              </div>
+            </div>
+            <div class="entry-body">
+              <div class="entry-tags">
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2026</span>
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>12 min read</span>
+              </div>
+              <p class="entry-excerpt">Thousands of stone steps, a hailstorm at Chhomrong, and a room that opened straight onto Machapuchare at sunrise. By Deurali, snow for the first time in my life — and an urge to throw snowballs that the altitude couldn't quite talk me out of.</p>
+            </div>
+          </a>
+
+          <a class="entry" href="#">
+            <div class="entry-head">
+              <div class="stamp">
+                <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2"><path d="M8 40 L8 20 L24 12 L40 20 L40 40 Z"/><path d="M24 12 L24 40"/></svg>
+              </div>
+              <div class="entry-heading">
+                <h3>Zero Point, and the Mountain That Waits to Be Seen</h3>
+                <div class="entry-location">Gangtok · Lachung · Yumthang · Zero Point, Sikkim</div>
+              </div>
+            </div>
+            <div class="entry-body">
+              <div class="entry-tags">
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2023</span>
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>9 min read</span>
+              </div>
+              <p class="entry-excerpt">Above 15,000 feet the air thins and the ground goes frozen still. Days later, on the way back down, Kanchenjunga finally reveals itself — not a reward, more a reminder that mountains show themselves when they want to.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="entries-col">
+        <div class="col-head is-gallery">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><circle cx="12" cy="13.5" r="3.2"/><path d="M8 7l1.5-2h5L16 7"/></svg>
+          Photo Journal
+        </div>
+        <div class="entries">
+
+          <a class="entry" href="#">
+            <div class="entry-head">
+              <div class="stamp">
+                <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2"><path d="M4 36 L18 14 L26 26 L32 18 L44 36 Z"/><circle cx="34" cy="10" r="3"/></svg>
+              </div>
+              <div class="entry-heading">
+                <h3>Kathmandu, Pokhara, and the Cold Shrine at Kalinchowk</h3>
+                <div class="entry-location">Kathmandu · Pokhara · Kalinchowk · Ghandruk, Nepal</div>
+              </div>
+            </div>
+            <div class="entry-body">
+              <div class="entry-tags">
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2025</span>
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><circle cx="12" cy="13.5" r="3.2"/><path d="M8 7l1.5-2h5L16 7"/></svg>Gallery</span>
+              </div>
+              <p class="entry-excerpt">Four places, one country, and none of them agreeing on what Nepal is supposed to feel like — Thamel's noise, Phewa Lake's quiet, the wind-scoured cable car up to Kalinchowk, and Ghandruk's stone steps going up forever.</p>
+            </div>
+          </a>
+
+          <a class="entry" href="#">
+            <div class="entry-head">
+              <div class="stamp">
+                <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2"><path d="M4 24 Q 14 14 24 24 T 44 24"/><path d="M4 32 Q 14 22 24 32 T 44 32"/></svg>
+              </div>
+              <div class="entry-heading">
+                <h3>Sunrise Over Batur, and Learning to Stand Alone</h3>
+                <div class="entry-location">Uluwatu · Ubud · Nusa Penida · Munduk · Sidemen, Bali</div>
+              </div>
+            </div>
+            <div class="entry-body">
+              <div class="entry-tags">
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>2025</span>
+                <span class="entry-tag-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><circle cx="12" cy="13.5" r="3.2"/><path d="M8 7l1.5-2h5L16 7"/></svg>Gallery</span>
+              </div>
+              <p class="entry-excerpt">Everything that could go sideways did — the wrong room, the wrong pace, an empty wallet more than once. But somewhere between the cliffs and a sunrise over Batur, I found out I could stand on my own just fine.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="route-divider">
+      <div class="line"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#d98f3f" stroke-width="1.5"><path d="M4 12 L20 12 M14 6 L20 12 L14 18"/></svg>
+      <div class="line"></div>
+    </div>
+  </section>
+
+  <section id="routes">
+    <div class="section-head">
+      <h2>Where the notebook's been</h2>
+      <span class="count">A running tally, not a bucket list</span>
+    </div>
+    <p style="color:var(--parchment-dim); max-width:70ch; margin-bottom:40px;">
+      Sikkim's high passes and the frozen stillness of Zero Point. Bali's cliffs at Uluwatu, rice terraces and volcano sunrises around Ubud, and the sea cliffs of Nusa Penida. Nepal, twice over — Kathmandu's tangle of alleys, Pokhara's lakeside calm, the cold shrine at Kalinchowk, Ghandruk's stone-stepped villages, and the long trail up to Annapurna Base Camp. More below the fold, still being written up.
+    </p>
+  </section>
+
+  <section id="about">
+    <div class="about">
+      <div>
+        <h2>About me (and this journal)</h2>
+        <p>Hey there, Zarar here. By day I'm a software engineer, which probably explains the spreadsheets. Every trip on here started as a plan built six months to a year out — the list of places I actually want to see is enormous, so I try to be realistic about which ones I can get to and when.</p>
+        <p>Then I show up and most of that planning stops mattering. I overpack without fail, I apparently talk in my sleep, and I'll eat almost anything as long as it's halal. I also have a documented history of tripping over perfectly flat ground. Somehow the treks still get finished — someone once told me it's "through sheer willpower and not necessarily fitness," which feels about right.</p>
+        <p>Broke Compass is where all of it gets written up afterward. No sponsored stays, no ten-best-things listicles, no fixed direction. Just what actually happened, and what it cost me.</p>
+        <p>Thanks for reading — hope it's at least half as fun to read as it was chaotic to live.</p>
+      </div>
+      <div class="quote">
+        "The budget never survives the trip. Neither does the version of me that made it."
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="social-row footer-socials">
+      <a class="social-item" href="https://www.facebook.com/zarar.mahmud.26" target="_blank" rel="noopener noreferrer">
+        <div class="social-badge">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 40V20a6 6 0 0 1 6-6h4"/>
+            <path d="M14 24h12"/>
+          </svg>
+        </div>
+        <span class="social-label">Facebook</span>
+      </a>
+      <a class="social-item" href="https://www.instagram.com/zarar089/" target="_blank" rel="noopener noreferrer">
+        <div class="social-badge">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="12" width="30" height="24" rx="7"/>
+            <circle cx="24" cy="24" r="6"/>
+            <circle cx="32" cy="17" r="1.3" fill="#d98f3f" stroke="none"/>
+          </svg>
+        </div>
+        <span class="social-label">Instagram</span>
+      </a>
+      <a class="social-item" href="https://x.com/zarar26896" target="_blank" rel="noopener noreferrer">
+        <div class="social-badge">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#d98f3f" stroke-width="2.6" stroke-linecap="round">
+            <path d="M12 12 L36 36 M36 12 L12 36"/>
+          </svg>
+        </div>
+        <span class="social-label">X</span>
+      </a>
+    </div>
+    <div class="foot-row">
+      <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="17" stroke="#e8e2d1" stroke-width="1.4"/><path d="M20 8 L23 20 L20 32 L17 20 Z" fill="#e8e2d1"/></svg>
+      <div class="foot-note">© Broke Compass — written by Zarar Mahmud, budget be damned.</div>
+      <div class="foot-note">Journal</div>
+    </div>
+    <p class="ai-note">I am not a writer, only someone who was there. These words are a small dance between my memory and a patient machine — I lead with what happened, it helps me find the rhythm to say it. The sketch is mine. The paint, some of it, is borrowed.</p>
+  </footer>
+</div>
+
+</body>
+</html>
