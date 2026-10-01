@@ -1,0 +1,49 @@
+/**
+ * Design tokens.
+ * The single source of truth for colour, type, and motion.
+ * Change a value here and it propagates everywhere.
+ */
+
+:root{
+  /* ---- Palette ---------------------------------------------------------
+   * Washed-denim ground, warm bone type, brass and copper accents.
+   * Never pure white, never pure black. */
+  --ink:            #212f3f;   /* page background — deep indigo denim */
+  --bark:           #2c4155;   /* card / panel background — washed denim */
+  --bark-2:         #35506a;   /* card hover / raised panel — lighter wash */
+  --parchment:      #e8e2d1;   /* primary text — warm bone */
+  --parchment-dim:  #93a2ae;   /* secondary text — cool denim-grey */
+  --brass:          #d98f3f;   /* primary accent — gold contrast-stitch thread */
+  --rust:           #b5651d;   /* secondary accent — copper rivet */
+
+  /* Derived from the accents. Kept as tokens so the alpha is tuned in
+   * one place rather than guessed at each call site. */
+  --line:           rgba(232, 226, 209, 0.14);
+  --brass-line:     rgba(217, 143, 63, 0.40);
+  --brass-line-lit: rgba(217, 143, 63, 0.45);
+  --brass-ring:     rgba(217, 143, 63, 0.50);
+  --parchment-line: rgba(232, 226, 209, 0.40);
+
+  /* ---- Type ------------------------------------------------------------ */
+  --font-display: 'Fraunces', Georgia, serif;         /* headings, pull quotes */
+  --font-body:    'Source Serif 4', Georgia, serif;   /* running prose */
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+                                                      /* labels, meta, eyebrows */
+
+  /* Every uppercase mono label on the site shares this treatment. */
+  --label-size:    0.72rem;
+  --label-tracking: 0.12em;
+
+  /* ---- Shape & motion -------------------------------------------------- */
+  --radius-card:  6px;
+  --radius-stamp: 10px;
+  --radius-pill:  20px;
+
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+  --speed-fast:   .2s;
+  --speed:        .25s;
+
+  /* ---- Layout ----------------------------------------------------------- */
+  --measure:      1080px;  /* max content width */
+  --gutter:       28px;
+}

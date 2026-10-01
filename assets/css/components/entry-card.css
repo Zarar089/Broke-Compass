@@ -1,0 +1,154 @@
+/**
+ * A single journal entry, as a card.
+ *
+ * Fixed height with clamped title, location, and excerpt: cards sit side by
+ * side across two columns, and ragged card heights read as sloppy layout
+ * rather than as variety. The clamps do the trimming so the copy in the
+ * data layer doesn't have to be written to length.
+ */
+.entry{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  height:300px;
+  overflow:hidden;
+  padding:24px 26px;
+  background:var(--bark);
+  border:1px solid var(--line);
+  border-radius:var(--radius-card);
+  text-decoration:none;
+  color:inherit;
+  transition:background var(--speed) var(--ease),
+             transform var(--speed) var(--ease),
+             border-color var(--speed) var(--ease);
+}
+
+.entry:hover{
+  background:var(--bark-2);
+  transform:translateY(-2px);
+  border-color:var(--brass-line-lit);
+}
+
+/* ---- Head: stamp, title, location ------------------------------------- */
+
+.entry-head{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:14px;
+  flex-shrink:0;
+}
+
+/**
+ * Passport stamp. The dashed border is the perforation, the two inset
+ * shadows cut the ink ring, and the four corner dots are the pin holes.
+ * Rotated off-axis, straightening slightly on hover.
+ */
+.stamp{
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  border-radius:var(--radius-stamp);
+  border:2px dashed var(--parchment-line);
+  box-shadow:inset 0 0 0 4px var(--ink),
+             inset 0 0 0 5px var(--brass-ring);
+  background:
+    radial-gradient(circle 2.2px at 8px 8px, var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.2px at calc(100% - 8px) 8px, var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.2px at 8px calc(100% - 8px), var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.2px at calc(100% - 8px) calc(100% - 8px), var(--rust) 99%, transparent 100%),
+    var(--bark);
+  transform:rotate(-4deg);
+  transition:transform var(--speed) var(--ease);
+}
+
+.entry:hover .stamp{ transform:rotate(-2deg); }
+
+.stamp .icon{
+  width:22px;
+  height:22px;
+  color:var(--brass);
+}
+
+.entry-heading{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0; /* lets the clamps below actually trim inside a flex row */
+}
+
+.entry-heading h4{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1.2rem;
+  line-height:1.28;
+  margin:0;
+  color:var(--parchment);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* The route line: places, dot-separated, trimmed to one line. */
+.entry-location{
+  margin:0;
+  font-size:0.66rem;
+  letter-spacing:0.05em;
+  color:var(--parchment-dim);
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* ---- Body: tags and excerpt -------------------------------------------- */
+
+.entry-body{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  min-height:0;
+}
+
+.entry-tags{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+  flex-shrink:0;
+}
+
+/* Year, read time, gallery marker. Dashed to echo the stamp perforation. */
+.entry-tag-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:0.64rem;
+  letter-spacing:0.06em;
+  color:var(--brass);
+  border:1px dashed var(--brass-line);
+  border-radius:var(--radius-pill);
+  padding:3px 10px;
+}
+
+.entry-tag-pill .icon{
+  width:12px;
+  height:12px;
+}
+
+/* Takes the remaining card height and clamps to whatever fits. */
+.entry-excerpt{
+  flex:1;
+  margin:0;
+  color:var(--parchment-dim);
+  font-size:0.97rem;
+  display:-webkit-box;
+  -webkit-line-clamp:5;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}

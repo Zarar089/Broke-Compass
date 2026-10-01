@@ -1,0 +1,83 @@
+/**
+ * Social links as round passport stamps — the same perforation, ink ring,
+ * and pin-hole treatment as .stamp on an entry card, drawn circular.
+ */
+.social-row{
+  display:flex;
+  gap:22px;
+  flex-wrap:wrap;
+  margin-bottom:70px;
+}
+
+.social-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--parchment-dim);
+}
+
+.social-badge{
+  width:64px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  border:2px dashed var(--parchment-line);
+  box-shadow:inset 0 0 0 5px var(--ink),
+             inset 0 0 0 6px var(--brass-ring);
+  /* The pin holes are painted per badge; only the last layer — the fill —
+   * changes on hover, which is why the gradients are repeated below. */
+  background:
+    radial-gradient(circle 2.5px at 9px 9px, var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 9px) 9px, var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 9px calc(100% - 9px), var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 9px) calc(100% - 9px), var(--rust) 99%, transparent 100%),
+    var(--bark);
+  transition:transform var(--speed) var(--ease),
+             background var(--speed) var(--ease);
+}
+
+.social-badge .icon{
+  width:26px;
+  height:26px;
+  color:var(--brass);
+}
+
+/* Lifts and tilts, like a stamp being pressed. */
+.social-item:hover .social-badge{
+  transform:translateY(-4px) rotate(-4deg);
+  background:
+    radial-gradient(circle 2.5px at 9px 9px, var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 9px) 9px, var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 9px calc(100% - 9px), var(--rust) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 9px) calc(100% - 9px), var(--rust) 99%, transparent 100%),
+    var(--bark-2);
+}
+
+.social-label{
+  font-size:0.68rem;
+  letter-spacing:0.1em;
+  transition:color var(--speed-fast) var(--ease);
+}
+
+.social-item:hover .social-label{ color:var(--brass); }
+
+/* ---- Footer variant: centred, one size down --------------------------- */
+
+.footer-socials{
+  justify-content:center;
+  margin-bottom:30px;
+}
+
+.footer-socials .social-badge{
+  width:48px;
+  height:48px;
+}
+
+.footer-socials .social-badge .icon{
+  width:20px;
+  height:20px;
+}

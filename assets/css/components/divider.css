@@ -1,0 +1,23 @@
+/**
+ * Section break drawn as a route line with a waypoint arrow at its centre.
+ */
+.route-divider{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin:64px 0;
+  color:var(--parchment-dim);
+}
+
+.route-divider .line{
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+
+.route-divider .icon{
+  width:22px;
+  height:22px;
+  opacity:0.7;
+  color:var(--brass);
+}

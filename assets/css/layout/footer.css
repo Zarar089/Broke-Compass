@@ -1,0 +1,51 @@
+/**
+ * Closing band: social stamps, a colophon row, and the note on how these
+ * pieces get written.
+ */
+.site-footer{
+  border-top:1px solid var(--line);
+  padding:34px 0 50px;
+}
+
+.foot-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:14px;
+}
+
+.foot-row .icon{
+  width:26px;
+  height:26px;
+  opacity:0.6;
+  color:var(--parchment);
+}
+
+/* Sentence case, unlike the uppercase .label used elsewhere. */
+.foot-note{
+  font-family:var(--font-mono);
+  font-size:0.7rem;
+  letter-spacing:0.04em;
+  color:var(--parchment-dim);
+}
+
+/**
+ * The disclosure about how the writing gets made. Set in the display italic
+ * rather than the mono of the rest of the footer — it is a sentence from the
+ * author, not a piece of chrome.
+ */
+.ai-note{
+  max-width:52ch;
+  margin:22px auto 0;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  font-family:var(--font-display);
+  font-style:italic;
+  font-weight:300;
+  font-size:0.72rem;
+  line-height:1.7;
+  color:var(--parchment-dim);
+  opacity:0.75;
+}
