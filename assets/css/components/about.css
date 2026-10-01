@@ -1,0 +1,35 @@
+/**
+ * About spread: prose on the left, a pull quote on the right.
+ * Top-aligned so the quote sits with the opening of the prose.
+ */
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:50px;
+  align-items:start;
+  margin-bottom:70px;
+}
+
+.about h2{
+  font-family:var(--font-display);
+  font-size:1.7rem;
+  margin:0 0 16px;
+}
+
+.about p{ color:var(--parchment-dim); }
+
+/* Marginal rule in copper, as though ruled beside a notebook entry. */
+.about .quote{
+  margin:0;
+  border-left:2px solid var(--rust);
+  padding-left:20px;
+  font-family:var(--font-display);
+  font-style:italic;
+  font-weight:300;
+  font-size:1.15rem;
+  color:var(--parchment);
+}
+
+@media (max-width:700px){
+  .about{ grid-template-columns:1fr; }
+}

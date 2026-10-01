@@ -1,0 +1,56 @@
+/**
+ * Sticky masthead: brand mark on the left, section links on the right.
+ * The gradient background fades the page out underneath rather than
+ * cutting a hard band across it as content scrolls up.
+ */
+
+.nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:linear-gradient(var(--ink) 78%, transparent);
+  padding:22px 0 14px;
+}
+
+.nav-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1.32rem;
+  letter-spacing:0.01em;
+  color:var(--parchment);
+  text-decoration:none;
+}
+
+.brand .icon{
+  width:30px;
+  height:30px;
+  color:var(--brass);
+}
+
+.nav-links{
+  display:flex;
+  gap:30px;
+}
+
+.nav-links a{
+  color:var(--parchment-dim);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+  padding-bottom:3px;
+  transition:color var(--speed-fast) var(--ease),
+             border-color var(--speed-fast) var(--ease);
+}
+
+.nav-links a:hover{
+  color:var(--brass);
+  border-color:var(--brass);
+}

@@ -1,0 +1,51 @@
+/**
+ * Two-column entry board: written-up field notes on the left, photo
+ * journals on the right. Columns align to the top so a short column
+ * doesn't stretch its cards to match a long one.
+ */
+.entries-split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:26px;
+  align-items:start;
+  margin-bottom:60px;
+}
+
+/* The stack of cards within one column. */
+.entries{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+/* Column heading — a dashed rule, as though ruled into a notebook. */
+.col-head{
+  font-weight:400;
+  margin:0 0 20px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:0.74rem;
+  color:var(--parchment-dim);
+  padding-bottom:12px;
+  border-bottom:1px dashed var(--line);
+}
+
+.col-head .icon{
+  width:16px;
+  height:16px;
+}
+
+/* The photo column is keyed brass to set it apart from the prose column. */
+.col-head.is-gallery{
+  color:var(--brass);
+  border-bottom-color:var(--brass-line);
+}
+
+@media (max-width:800px){
+  /* Stacked, with a wider gap so the two column heads don't read as one list. */
+  .entries-split{
+    grid-template-columns:1fr;
+    gap:50px;
+  }
+}

@@ -1,0 +1,32 @@
+/**
+ * The heading row that opens a section: title on the left, a wry running
+ * note on the right. Baseline-aligned so the mono note sits on the same
+ * line as the serif title rather than centring against it.
+ */
+.section-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+  margin:70px 0 30px;
+}
+
+.section-head h2{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1.7rem;
+  margin:0;
+  color:var(--parchment);
+}
+
+/**
+ * The running note. Mono like the rest of the site's chrome, but left in
+ * sentence case — it's an aside in the author's voice, not a label.
+ */
+.section-head .count{
+  font-family:var(--font-mono);
+  font-size:var(--label-size);
+  letter-spacing:0.08em;
+  color:var(--parchment-dim);
+}

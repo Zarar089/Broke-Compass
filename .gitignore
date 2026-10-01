@@ -1,2 +1,5 @@
 .DS_Store
 *.log
+
+# Raw story drafts — unfinished text must not be published
+posts/text_posts/

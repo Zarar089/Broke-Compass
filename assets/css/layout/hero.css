@@ -1,0 +1,132 @@
+/**
+ * Opening spread: headline and standfirst on the left, compass rose on
+ * the right, diagonal topographic rules bleeding behind both.
+ */
+
+.hero{
+  position:relative;
+  padding:64px 0 70px;
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+
+/* Diagonal rule field. Decorative, sits behind the grid. */
+.topo{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  opacity:0.16;
+  pointer-events:none;
+  color:var(--brass);
+}
+
+.hero-grid{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1.3fr 0.9fr;
+  gap:40px;
+  align-items:center;
+}
+
+/* Kicker above the headline, with its own leading rule. */
+.eyebrow{
+  margin:0 0 18px;
+  font-size:var(--label-size);
+  letter-spacing:0.16em;
+  color:var(--rust);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.eyebrow::before{
+  content:"";
+  width:26px;
+  height:1px;
+  background:var(--rust);
+}
+
+.hero-title{
+  font-family:var(--font-display);
+  font-optical-sizing:auto;
+  font-weight:600;
+  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  line-height:1.05;
+  margin:0 0 20px;
+  color:var(--parchment);
+}
+
+/* The second clause of the headline, set against the first. */
+.hero-title em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--brass);
+}
+
+.lede{
+  font-size:1.08rem;
+  color:var(--parchment-dim);
+  max-width:46ch;
+  margin:0 0 28px;
+}
+
+/* Running tally under the standfirst — counts are derived from entry data. */
+.hero-meta{
+  display:flex;
+  gap:22px;
+  flex-wrap:wrap;
+  font-family:var(--font-mono);
+  font-size:0.74rem;
+  color:var(--parchment-dim);
+  letter-spacing:0.03em;
+}
+
+.hero-meta span{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.hero-meta .icon{
+  width:15px;
+  height:15px;
+  opacity:0.8;
+  color:var(--brass);
+}
+
+.compass-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+.compass-wrap svg{
+  width:100%;
+  max-width:300px;
+  height:auto;
+}
+
+/* The needle drifts as though the page were being carried. */
+@media (prefers-reduced-motion: no-preference){
+  .needle{
+    animation:settle 9s ease-in-out infinite;
+    transform-origin:150px 150px;
+  }
+}
+
+@keyframes settle{
+  0%, 100%{ transform:rotate(-3deg); }
+  50%     { transform:rotate(4deg); }
+}
+
+@media (max-width:640px){
+  .hero-grid{ grid-template-columns:1fr; }
+  /* Compass leads on narrow screens; the headline reads better below it. */
+  .compass-wrap{
+    order:-1;
+    max-width:200px;
+    margin:0 auto 20px;
+  }
+}

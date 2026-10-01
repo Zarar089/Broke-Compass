@@ -1,0 +1,11 @@
+/**
+ * The single content column every section sits inside.
+ * z-index:2 lifts it above the fixed paper-grain overlay on body::before.
+ */
+.wrap{
+  max-width:var(--measure);
+  margin:0 auto;
+  padding:0 var(--gutter);
+  position:relative;
+  z-index:2;
+}

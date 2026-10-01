@@ -1,0 +1,111 @@
+/**
+ * The parts of a multi-part series, listed in order on the series page.
+ * Each part is a wide card led by a passport stamp carrying its numeral.
+ */
+.part-list{
+  list-style:none;
+  margin:0 0 20px;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.part-card{
+  display:flex;
+  align-items:flex-start;
+  gap:22px;
+  padding:26px 28px;
+  background:var(--bark);
+  border:1px solid var(--line);
+  border-radius:var(--radius-card);
+  text-decoration:none;
+  color:inherit;
+  transition:background var(--speed) var(--ease),
+             transform var(--speed) var(--ease),
+             border-color var(--speed) var(--ease);
+}
+
+.part-card:hover{
+  background:var(--bark-2);
+  transform:translateY(-2px);
+  border-color:var(--brass-line-lit);
+}
+
+/* The .stamp from entry-card.css, one size up, with a numeral inside. */
+.part-num{
+  width:58px;
+  height:58px;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1.2rem;
+  color:var(--brass);
+}
+
+.part-card:hover .part-num{ transform:rotate(-2deg); }
+
+.part-card-body{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+  flex:1;
+}
+
+.part-card-kicker{
+  margin:0;
+  font-size:0.66rem;
+  color:var(--rust);
+}
+
+.part-card h3{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1.35rem;
+  line-height:1.25;
+  margin:0;
+  color:var(--parchment);
+}
+
+.part-card .entry-location{
+  -webkit-line-clamp:2;
+}
+
+.part-card-teaser{
+  margin:8px 0 0;
+  max-width:70ch;
+  color:var(--parchment-dim);
+  font-size:0.99rem;
+}
+
+.part-card-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.part-card-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--brass);
+}
+
+.part-card-cta .icon{
+  width:16px;
+  height:16px;
+  transition:transform var(--speed) var(--ease);
+}
+
+.part-card:hover .part-card-cta .icon{ transform:translateX(3px); }
+
+@media (max-width:560px){
+  .part-card{
+    flex-direction:column;
+    gap:16px;
+    padding:22px 20px;
+  }
+}
