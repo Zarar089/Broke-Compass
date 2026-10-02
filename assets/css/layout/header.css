@@ -4,7 +4,11 @@
  * cutting a hard band across it as content scrolls up.
  */
 
+/* Bootstrap also defines .nav (a flex, wrapping link list); display:block
+ * and the resets below keep this a plain sticky band around .nav-row. */
 .nav{
+  display:block;
+  margin-bottom:0;
   position:sticky;
   top:0;
   z-index:20;

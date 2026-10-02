@@ -1,11 +1,16 @@
 /**
- * The single content column every section sits inside.
+ * The content container every section sits inside. Layout comes from
+ * Bootstrap's .container-fluid — full viewport width at every breakpoint —
+ * and .wrap adds what's specific to this site: a wider gutter than
+ * Bootstrap's 12px, and a stacking context above the paper grain.
+ *
+ * Long-form text keeps its own reading measure (see .prose, .lede,
+ * .section-lede) so lines don't run edge to edge on wide screens.
  * z-index:2 lifts it above the fixed paper-grain overlay on body::before.
  */
 .wrap{
-  max-width:var(--measure);
-  margin:0 auto;
-  padding:0 var(--gutter);
+  padding-left:var(--gutter);
+  padding-right:var(--gutter);
   position:relative;
   z-index:2;
 }

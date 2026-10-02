@@ -2,24 +2,35 @@
 
 Zarar Mahmud's travel journal — field notes and photo journals from Sikkim, Bali, Nepal, and wherever's next.
 
-No build step, no dependencies, no framework. `index.html` holds the markup;
+No build step and nothing to install. `index.html` holds the markup;
 the styles live in `assets/css/` as small files, linked through a single
-`main.css`. Open `index.html` directly in a browser, or edit any of it in a
+`main.css`. Bootstrap 5's CSS (no Bootstrap JS) is loaded from the jsDelivr
+CDN ahead of `main.css`. Every page sits in a Bootstrap `.container-fluid`,
+so the layout spans the full width of the screen, and Bootstrap's utility
+classes are there if you want them. The site's own styles load second and
+win any tie. Open `index.html` directly in a browser, or edit any of it in a
 text editor.
 
 ## Project structure
 
 ```
 index.html                  markup only — no inline styles
+sitemap.xml                 every published page, for search engines
+robots.txt                  points crawlers at the sitemap
 assets/
+  js/
+    compass.js              the hero compass needle, pulled toward the cursor like a magnet
+  icons/                    favicon.svg, favicon-32.png, apple-touch-icon.png
+  images/
+    og-card.png             1200×630 preview shown when a link is shared
   css/
-    main.css                the only stylesheet index.html links; @imports the rest, in order
+    main.css                the site's stylesheet (after Bootstrap); @imports the rest, in order
     base/
       tokens.css            colours, fonts, radii, timings — change a value here, it propagates
-      reset.css             box-sizing, page background, paper grain, focus ring
+      reset.css             page background, paper grain, focus ring, Bootstrap Reboot fixes
       typography.css        shared type treatments (.label, .section-lede)
     layout/
-      wrap.css              the centred content column
+      wrap.css              gutter and stacking for the .container-fluid wrapper
       header.css            sticky masthead
       hero.css              opening spread + compass
       footer.css            closing band
@@ -120,7 +131,46 @@ The raw story lives in `posts/text_posts/abc_trek.txt`, which is git-ignored so 
 ends with a long line of hyphens; anything after the last line of hyphens is
 still a draft and isn't published. To add a part, copy the last part page,
 change the title, route, read time and prose, link it from the series page,
-and point the previous part's "next" link at it.
+and point the previous part's "next" link at it. Then update its SEO tags
+(see below) and add it to `sitemap.xml`.
 
 The other homepage cards still link to `#`. Their pages can follow the same
 shape under `posts/` (e.g. `posts/sikkim.html`).
+
+## SEO
+
+Every page's `<head>` carries, in this order:
+
+- `<title>` (under ~60 characters) and `<meta name="description">` (under ~160)
+  — these are what show up in a Google result, so lead with what people search
+  for ("ABC trek", "Annapurna Base Camp", place names).
+- `<meta name="keywords">`. Google ignores this tag; it's there for the smaller
+  engines that still read it. Don't stuff it.
+- `<link rel="canonical">` — the page's one true absolute URL.
+- Favicons, then Open Graph and Twitter/X tags, which decide the preview card
+  on Facebook, WhatsApp, X and LinkedIn. All pages share `assets/images/og-card.png`.
+- A `<script type="application/ld+json">` block of schema.org structured data:
+  `WebSite` + `Person` + `Blog` on the homepage, `CollectionPage` + breadcrumbs
+  on a series page, `BlogPosting` + breadcrumbs on each part.
+
+When copying a part page, change every one of those: title, description,
+keywords, canonical, `og:`/`twitter:` title, description and URL, the
+`article:tag`s, and the JSON-LD (headline, description, URLs, `wordCount`,
+`timeRequired`, places, and the third breadcrumb). Add the series page's
+`ItemList` entry for it too.
+
+**The site lives at `https://broke-compass.netlify.app/`.** Canonical, Open
+Graph, JSON-LD and sitemap URLs are all absolute and built on that address. If
+it moves (a custom domain, say), find-and-replace it across `*.html`,
+`sitemap.xml` and `robots.txt`; stale absolute URLs do more harm than none.
+
+After deploying:
+
+1. Add `https://broke-compass.netlify.app/` in
+   [Google Search Console](https://search.google.com/search-console) as a
+   URL-prefix property, and verify with the HTML-tag method: paste the
+   `<meta name="google-site-verification">` tag into `index.html`'s `<head>`.
+2. Under **Sitemaps**, submit `sitemap.xml`. Do the same in
+   [Bing Webmaster Tools](https://www.bing.com/webmasters), which also feeds DuckDuckGo
+   and Yahoo.
+3. Check each page with Google's [Rich Results Test](https://search.google.com/test/rich-results).
