@@ -44,6 +44,7 @@
   --speed:        .25s;
 
   /* ---- Layout ----------------------------------------------------------- */
-  --measure:      1080px;  /* max content width */
-  --gutter:       28px;
+  /* The container is fluid (see layout/wrap.css), so the gutter grows with
+   * the viewport instead of the content column stopping at a max width. */
+  --gutter:       clamp(28px, 4vw, 72px);
 }

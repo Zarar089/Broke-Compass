@@ -1,5 +1,6 @@
 /**
- * Stylesheet entry point — the only stylesheet index.html links.
+ * Stylesheet entry point. Pages link Bootstrap's CSS first, then this file,
+ * so these rules win over Bootstrap's wherever the two disagree.
  *
  * Order matters: tokens define the variables everything else reads, reset
  * lays the ground, layout places the regions, components style what sits

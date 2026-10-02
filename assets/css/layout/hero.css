@@ -108,13 +108,17 @@
   height:auto;
 }
 
+/* Pivot at the centre of the 300×300 viewBox. */
+.needle{ transform-origin:150px 150px; }
+
 /* The needle drifts as though the page were being carried. */
 @media (prefers-reduced-motion: no-preference){
-  .needle{
-    animation:settle 9s ease-in-out infinite;
-    transform-origin:150px 150px;
-  }
+  .needle{ animation:settle 9s ease-in-out infinite; }
 }
+
+/* Once assets/js/compass.js is running it drives the needle itself — drift
+ * included — and swings it toward the cursor like a magnet held close. */
+.compass-wrap.is-live .needle{ animation:none; }
 
 @keyframes settle{
   0%, 100%{ transform:rotate(-3deg); }
