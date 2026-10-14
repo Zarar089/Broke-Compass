@@ -24,7 +24,7 @@ assets/
   js/
     compass.js              the hero compass needle, pulled toward the cursor like a magnet
     quiz/
-      api.js                read-only Firebase Realtime Database access (REST, no SDK)
+      api.js                read-only Firebase access (REST, no SDK), cached in localStorage
       page.js               shared by the quiz pages: the loader and the empty state
       hub.js                quiz/index.html: lists the quizzes
       play.js               quiz/play.html: one question per screen, saves progress
@@ -193,11 +193,14 @@ the `DB_URL` constant at the top of `assets/js/quiz/api.js`.
 
 | collection       | fields                                                |
 | ---------------- | ----------------------------------------------------- |
-| `quizzes`        | `quiz_id`, `title`, `image_dir`                       |
+| `quizzes`        | `quiz_id`, `title`, `image_dir`, `last_updated`       |
 | `questions`      | `question_id`, `quiz_id`, `title`                     |
 | `options`        | `question_id`, `quiz_id`, `text`, `score`             |
 | `score_mappings` | `quiz_id`, `min_score`, `max_score`, `result_id`      |
 | `results`        | `result_id`, `quiz_id`, `title`, `description`, `image_url` |
+
+`last_updated` is a timestamp in milliseconds (e.g. `1791995269216`). It
+drives the cache below.
 
 A reader's answers are added up, and the score band they fall in picks the
 result. Options are shuffled on screen, so their order never gives the
@@ -219,6 +222,20 @@ indexed on `quiz_id` so a quiz's rows come back in one filtered request:
 }
 ```
 
+**Caching.** `api.js` keeps every quiz and all its rows in `localStorage`
+(`broke-compass:quiz-library:v1`, about 17 KB per quiz). Each page makes one
+request for `quizzes`. For each quiz, if the cached copy's `last_updated` is
+at least the database's, the cached copy is used. Otherwise that quiz's four
+collections are fetched again. A returning reader costs one small request per
+page, and a first visit costs one plus four per quiz. If the `quizzes`
+request fails and there's a cached copy, the pages run on that.
+
+**So whenever you change a quiz's questions, options, results or score bands,
+bump that quiz's `last_updated`** (`Date.now()` in the browser console gives
+the current one). Otherwise readers who've already visited keep the old copy.
+If the cached shape ever changes in code, bump the `v1` in `CACHE_KEY` so old
+copies are ignored.
+
 **Images.** `image_url` is relative to `assets/images/`, e.g.
 `mountain_lover_quiz/result_7.webp`. Result images are WebP (quality ~80,
 around 130 KB each). Convert new ones with
@@ -227,7 +244,7 @@ stay PNG, because social-preview crawlers and iOS home-screen icons need PNG
 or JPEG.
 
 **Adding a quiz.** Add the rows in the Firebase console (or import JSON),
-put its images in `assets/images/<image_dir>/`, and it shows up on the hub
+including the quiz's `last_updated`, put its images in `assets/images/<image_dir>/`, and it shows up on the hub
 by itself. Keep exports in `data/`. It's git-ignored because an export is
 the answer key.
 

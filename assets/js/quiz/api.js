@@ -6,6 +6,11 @@
  * options, results and score_mappings. Every row carries a quiz_id, and each
  * collection is indexed on it (".indexOn" in the database rules), so one
  * quiz's rows come back from a single filtered request.
+ *
+ * Everything is cached in localStorage. Each quiz row carries last_updated
+ * (ms since the epoch), so a page makes one request for the quiz list and
+ * re-downloads only the quizzes whose cached copy is behind. If that request
+ * fails, the cached copy is used as is.
  */
 
 const DB_URL = 'https://broke-compass-default-rtdb.asia-southeast1.firebasedatabase.app';
@@ -56,41 +61,116 @@ async function getQuizRows(collection, quizId) {
   return toRows(await get(collection, { orderBy: 'quiz_id', equalTo: quizId }));
 }
 
-async function getRecord(path, notFoundMessage) {
-  const record = await get(path);
-  if (!record) throw new NotFoundError(notFoundMessage);
-  return record;
+/* ---- Cache --------------------------------------------------------------- */
+
+/* Bump the version when the cached shape changes, so old copies are ignored. */
+const CACHE_KEY = 'broke-compass:quiz-library:v1';
+const QUIZ_COLLECTIONS = ['questions', 'options', 'results', 'score_mappings'];
+
+function readCache() {
+  try {
+    return JSON.parse(localStorage.getItem(CACHE_KEY)) ?? {};
+  } catch {
+    return {}; // storage blocked or corrupt: start empty
+  }
 }
+
+function writeCache(library) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(library));
+  } catch {
+    /* storage blocked or full: the next visit downloads again */
+  }
+}
+
+/** One quiz's rows from every collection, as { questions, options, … }. */
+async function fetchQuizRows(quizId) {
+  const rows = await Promise.all(QUIZ_COLLECTIONS.map((collection) => getQuizRows(collection, quizId)));
+  return Object.fromEntries(QUIZ_COLLECTIONS.map((collection, i) => [collection, rows[i]]));
+}
+
+/**
+ * Every quiz with all of its rows, keyed by quiz_id. Quizzes the database no
+ * longer lists drop out; the rest are re-downloaded only when the cached
+ * copy is missing or older than the database's last_updated.
+ */
+async function syncLibrary() {
+  const cached = readCache();
+
+  let quizzes;
+  try {
+    quizzes = toRows(await get('quizzes'));
+  } catch (error) {
+    if (Object.keys(cached).length) return cached; // offline: carry on with what we have
+    throw error;
+  }
+
+  const entries = await Promise.all(
+    quizzes.map(async (quiz) => {
+      const stored = cached[quiz.quiz_id];
+      const upToDate = stored?.quiz.last_updated >= quiz.last_updated;
+      const rows = upToDate ? stored : await fetchQuizRows(quiz.quiz_id);
+      return [quiz.quiz_id, { ...rows, quiz }];
+    }),
+  );
+
+  const library = Object.fromEntries(entries);
+  writeCache(library);
+  return library;
+}
+
+/* Synced once per page. A failed sync is forgotten, so Try again retries it. */
+let libraryPromise = null;
+
+function getLibrary() {
+  libraryPromise ??= syncLibrary().catch((error) => {
+    libraryPromise = null;
+    throw error;
+  });
+  return libraryPromise;
+}
+
+async function getQuizEntry(quizId) {
+  const entry = (await getLibrary())[quizId];
+  if (!entry) {
+    throw new NotFoundError(
+      'This quiz got too invested in the trail and wandered off. Grab your flashlight and ' +
+        'pick another from the list of quizzes before a bear finds it first.',
+    );
+  }
+  return entry;
+}
+
+/* ---- Queries ------------------------------------------------------------- */
 
 export async function listQuizzes() {
-  const quizzes = toRows(await get('quizzes'));
-  return quizzes.sort((a, b) => a.quiz_id - b.quiz_id);
+  const entries = Object.values(await getLibrary());
+  return entries.map((entry) => entry.quiz).sort((a, b) => a.quiz_id - b.quiz_id);
 }
 
-export function getQuiz(quizId) {
-  return getRecord(
-    `quizzes/${quizId}`,
-    'This quiz got too invested in the trail and wandered off. Grab your flashlight and ' +
-      'pick another from the list of quizzes before a bear finds it first.',
-  );
+export async function getQuiz(quizId) {
+  return (await getQuizEntry(quizId)).quiz;
 }
 
-export function getResult(resultId) {
-  return getRecord(
-    `results/${resultId}`,
-    'This result went off to find itself and never came back. Probably got stuck working ' +
-      'a 9 to 5. Take a quiz to find a new one.',
-  );
+export async function getResult(resultId) {
+  const entries = Object.values(await getLibrary());
+  const result = entries
+    .flatMap((entry) => entry.results)
+    .find((row) => row.result_id === resultId);
+  if (!result) {
+    throw new NotFoundError(
+      'This result went off to find itself and never came back. Probably got stuck working ' +
+        'a 9 to 5. Take a quiz to find a new one.',
+    );
+  }
+  return result;
 }
 
 /** The quiz's questions in order, each carrying its own options. */
 export async function getQuestions(quizId) {
-  const [questions, options] = await Promise.all([
-    getQuizRows('questions', quizId),
-    getQuizRows('options', quizId),
-  ]);
+  const { questions, options } = await getQuizEntry(quizId);
 
-  return questions
+  return [...questions]
     .sort((a, b) => a.question_id - b.question_id)
     .map((question) => ({
       ...question,
@@ -100,7 +180,7 @@ export async function getQuestions(quizId) {
 
 /** The result whose score band contains the given total. */
 export async function getResultIdForScore(quizId, score) {
-  const bands = await getQuizRows('score_mappings', quizId);
+  const { score_mappings: bands } = await getQuizEntry(quizId);
   const band = bands.find((b) => score >= b.min_score && score <= b.max_score);
   if (!band) {
     throw new NotFoundError(
