@@ -37,6 +37,7 @@ assets/
     mountain_lover_quiz/    result_1.webp … result_15.webp, one per quiz result
     compass.svg             the homepage compass, as the quiz loading spinner
     compass-lost.svg        "Lost the trail": the 404 page and the quiz error state
+    journal-wip.svg         a half-written journal: the work-in-progress pages
   css/
     main.css                the site's stylesheet (after Bootstrap); @imports the rest, in order
     base/
@@ -59,7 +60,7 @@ assets/
       part-list.css         the list of parts on a series page (also the quiz cards)
       post-aside.css        the sidebar beside a post: other journals, a quiz
       button.css            brass pill buttons and their ghost variant
-      lost-trail.css        "Lost the trail" box: the 404 page and quiz errors
+      lost-trail.css        "Lost the trail" box: 404, work-in-progress, quiz errors
       quiz.css              quiz questions, result spread, postcard
     utilities/
       a11y.css              .visually-hidden, reduced-motion
@@ -72,6 +73,8 @@ posts/
   abc-trek/
     index.html              series page: every published part, with a teaser
     part-1.html … part-4.html
+  sikkim/ nepal-photos/ bali-photos/
+    index.html              work in progress: a placeholder until it's written up
   text_posts/               raw drafts the post pages are made from (git-ignored)
 ```
 
@@ -170,8 +173,14 @@ footer. When a journal gets its own page, update its sidebar entry on the
 `<a class="aside-journal" href="…">` and drop the "Coming soon" pill. A new
 journal also needs adding to every other journal's sidebar.
 
-The other homepage cards still link to `#`. Their pages can follow the same
-shape under `posts/` (e.g. `posts/sikkim.html`).
+**Work-in-progress pages.** Every homepage card leads somewhere. A journal
+that isn't written up yet gets a placeholder at the URL its real page will
+use: `posts/sikkim/`, `posts/nepal-photos/` and `posts/bali-photos/`. Each
+shows the journal illustration (`journal-wip.svg`), a line in the journal's
+voice, and a way on to the ABC trek. They're `noindex` and stay out of
+`sitemap.xml`. When a journal is written up, replace its `index.html` with
+the real page (same shape as `posts/abc-trek/`), drop the `noindex`, and add
+it to the sitemap. The homepage link doesn't change.
 
 ## Quiz
 
