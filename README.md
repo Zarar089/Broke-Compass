@@ -34,6 +34,7 @@ assets/
   icons/                    favicon.svg, favicon-32.png, apple-touch-icon.png
   images/
     og-card.png             1200×630 preview shown when a link is shared
+    story-card.svg / .png   1080×1080 denim compass card to post as an Instagram story
     mountain_lover_quiz/    result_1.webp … result_15.webp, one per quiz result
     compass.svg             the homepage compass, as the quiz loading spinner
     compass-lost.svg        "Lost the trail": the 404 page and the quiz error state
@@ -313,6 +314,17 @@ doesn't exist, at any depth, so its links and assets are root-absolute
 won't style when opened from the file system, and it would need its paths
 prefixed if the site ever moved under a subfolder. It's `noindex` and stays
 out of `sitemap.xml`.
+
+**Instagram stories.** Stories don't use `og:image`: a link sticker shows
+only the address (or your own text), never a preview. To get an image in a
+story, post `assets/images/story-card.png` as the story and put the link
+sticker on it (it's also at `/assets/images/story-card.png` on the live site,
+handy for grabbing on a phone). Edit `story-card.svg`, then re-render the PNG:
+
+```
+google-chrome --headless --hide-scrollbars --window-size=1080,1080 \
+  --screenshot=assets/images/story-card.png assets/images/story-card.svg
+```
 
 **The site lives at `https://broke-compass.netlify.app/`.** Canonical, Open
 Graph, JSON-LD and sitemap URLs are all absolute and built on that address. If

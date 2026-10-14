@@ -1,0 +1,103 @@
+<!-- Square story card (1080×1080): post it as an Instagram story and put the
+     link sticker on top. Denim twill with a washed, mottled finish, a rounded
+     inner panel edged in double contrast stitching with copper rivets at the
+     corners, and the homepage compass in the middle.
+     The PNG beside it (story-card.png) is rendered from this file; see README.
+     Colours are the site tokens: brass #e2a96b, parchment #e8e2d1, rust #b5651d,
+     ink #212f3f, bark #2c4155, bark-2 #304860. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" fill="none">
+  <defs>
+    <!-- Twill: fine diagonal ribs, the weave that makes denim denim. -->
+    <pattern id="twill" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-62)">
+      <rect width="3.2" height="7" fill="#3a5774" opacity="0.55"/>
+      <rect x="3.2" width="0.8" height="7" fill="#1a2533" opacity="0.35"/>
+    </pattern>
+
+    <!-- Washed finish: soft light and dark patches across the whole cloth. -->
+    <filter id="wash" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.006" numOctaves="3" seed="7"/>
+      <feColorMatrix values="0 0 0 0 0.91  0 0 0 0 0.89  0 0 0 0 0.82  0 0 0 0.55 -0.2"/>
+    </filter>
+
+    <!-- Slubs: short pale flecks of uneven yarn. -->
+    <filter id="slub" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.08" numOctaves="1" seed="3"/>
+      <feColorMatrix values="0 0 0 0 0.91  0 0 0 0 0.89  0 0 0 0 0.82  0 0 0 2.4 -1.75"/>
+    </filter>
+
+    <!-- The panel sits slightly proud of the cloth. -->
+    <filter id="lift" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0d141d" flood-opacity="0.55"/>
+    </filter>
+
+    <radialGradient id="vignette" cx="50%" cy="50%" r="72%">
+      <stop offset="0.55" stop-color="#0d141d" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0d141d" stop-opacity="0.6"/>
+    </radialGradient>
+
+    <radialGradient id="rivet" cx="38%" cy="34%" r="70%">
+      <stop offset="0" stop-color="#f0c48f"/>
+      <stop offset="0.45" stop-color="#d98f3f"/>
+      <stop offset="1" stop-color="#7a4314"/>
+    </radialGradient>
+
+    <!-- One rivet: copper dome on a pressed ring. -->
+    <g id="rivet-mark">
+      <circle r="17" fill="#1a2533" opacity="0.45"/>
+      <circle r="13" fill="url(#rivet)"/>
+      <circle r="5" fill="none" stroke="#7a4314" stroke-width="1.5" opacity="0.7"/>
+    </g>
+  </defs>
+
+  <!-- Cloth -->
+  <rect width="1080" height="1080" fill="#2c4155"/>
+  <rect width="1080" height="1080" fill="url(#twill)"/>
+  <rect width="1080" height="1080" filter="url(#wash)" opacity="0.18"/>
+  <rect width="1080" height="1080" filter="url(#slub)" opacity="0.22"/>
+  <rect width="1080" height="1080" fill="url(#vignette)"/>
+
+  <!-- Panel: a patch of slightly darker denim, sewn on -->
+  <g filter="url(#lift)">
+    <rect x="110" y="110" width="860" height="860" rx="64" fill="#24364a"/>
+  </g>
+  <rect x="110" y="110" width="860" height="860" rx="64" fill="url(#twill)" opacity="0.8"/>
+  <rect x="110" y="110" width="860" height="860" rx="64" filter="url(#slub)" opacity="0.14"/>
+
+  <!-- Seam fold just inside the edge, then the double contrast stitch -->
+  <rect x="122" y="122" width="836" height="836" rx="54" stroke="#1a2533" stroke-width="3" opacity="0.6"/>
+  <g stroke="#e2a96b" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 12">
+    <rect x="136" y="136" width="808" height="808" rx="42"/>
+    <rect x="156" y="156" width="768" height="768" rx="30"/>
+  </g>
+
+  <!-- Rivets at the panel corners -->
+  <use href="#rivet-mark" x="196" y="196"/>
+  <use href="#rivet-mark" x="884" y="196"/>
+  <use href="#rivet-mark" x="196" y="884"/>
+  <use href="#rivet-mark" x="884" y="884"/>
+
+  <!-- Compass: the homepage hero compass, scaled up -->
+  <g transform="translate(540 540) scale(2.1) translate(-150 -150)">
+    <circle cx="150" cy="150" r="128" fill="#212f3f" opacity="0.55"/>
+    <circle cx="150" cy="150" r="118" stroke="#d98f3f" stroke-width="1.6" opacity="0.8"/>
+    <circle cx="150" cy="150" r="95" stroke="#e8e2d1" stroke-width="1" opacity="0.3"/>
+    <g stroke="#e8e2d1" stroke-width="1.2" opacity="0.5">
+      <line x1="150" y1="32" x2="150" y2="52"/>
+      <line x1="150" y1="248" x2="150" y2="268"/>
+      <line x1="32" y1="150" x2="52" y2="150"/>
+      <line x1="248" y1="150" x2="268" y2="150"/>
+    </g>
+    <g fill="#e8e2d1" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" text-anchor="middle">
+      <text x="150" y="26" opacity="0.85">N</text>
+      <text x="150" y="282" opacity="0.6">S</text>
+      <text x="20" y="155" opacity="0.6">W</text>
+      <text x="280" y="155" opacity="0.6">E</text>
+    </g>
+    <g transform="rotate(18 150 150)">
+      <path d="M150 60 L163 150 L150 240 L137 150 Z" fill="#d98f3f"/>
+      <path d="M150 60 L163 150 L150 150 Z" fill="#f0b072"/>
+      <path d="M150 240 L137 150 L150 150 Z" fill="#b5651d"/>
+    </g>
+    <circle cx="150" cy="150" r="8" fill="#212f3f" stroke="#e8e2d1" stroke-width="1.4"/>
+  </g>
+</svg>
