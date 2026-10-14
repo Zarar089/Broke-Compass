@@ -1,0 +1,22 @@
+<!-- The homepage compass rose, as a standalone image (quiz loading spinner).
+     Colours are the site tokens: brass #e2a96b, parchment #e8e2d1, rust #b5651d, ink #212f3f. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none">
+  <circle fill="none" cx="150" cy="150" r="118" stroke="#e2a96b" stroke-width="4" opacity="0.75"/>
+  <circle fill="none" cx="150" cy="150" r="95" stroke="#e8e2d1" stroke-width="2.5" opacity="0.3"/>
+  <g stroke="#e8e2d1" stroke-width="3" opacity="0.5">
+    <line x1="150" y1="32" x2="150" y2="52"/>
+    <line x1="150" y1="248" x2="150" y2="268"/>
+    <line x1="32" y1="150" x2="52" y2="150"/>
+    <line x1="248" y1="150" x2="268" y2="150"/>
+  </g>
+  <g fill="#e8e2d1" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="20" text-anchor="middle">
+    <text x="150" y="24" opacity="0.8">N</text>
+    <text x="150" y="292" opacity="0.55">S</text>
+    <text x="16" y="157" opacity="0.55">W</text>
+    <text x="284" y="157" opacity="0.55">E</text>
+  </g>
+  <path d="M150 60 L163 150 L150 240 L137 150 Z" fill="#e2a96b"/>
+  <path d="M150 60 L163 150 L150 150 Z" fill="#f0c48f"/>
+  <path d="M150 240 L137 150 L150 150 Z" fill="#b5651d"/>
+  <circle cx="150" cy="150" r="9" fill="#212f3f" stroke="#e8e2d1" stroke-width="2"/>
+</svg>

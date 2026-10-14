@@ -1,0 +1,255 @@
+/**
+ * The quiz pages: the question form, the result spread, and the postcard.
+ * The quiz hub reuses .part-card from part-list.css for its quiz cards.
+ *
+ * Every text/surface pair here uses the tokens' AA-checked colours. Controls
+ * are at least 44px tall, and focus shows as the site's brass ring.
+ */
+
+/* ---- Shared ------------------------------------------------------------ */
+
+/**
+ * Loading: the homepage compass, turning and breathing in and out. Spin and
+ * zoom are separate animations (rotate / scale), so each keeps its own
+ * rhythm. With reduced motion it holds still; the label carries the message.
+ */
+.quiz-loader{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:22px;
+  padding:72px 0;
+  text-align:center;
+}
+
+.quiz-loader-compass{
+  width:112px;
+  height:112px;
+  animation:compass-spin 2.8s linear infinite,
+            compass-breathe 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes compass-spin{
+  to{ rotate:360deg; }
+}
+
+@keyframes compass-breathe{
+  from{ scale:0.82; }
+  to{ scale:1.1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .quiz-loader-compass{ animation:none; }
+}
+
+.quiz-loader-label{
+  margin:0;
+  color:var(--parchment-dim);
+}
+
+.quiz-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-top:32px;
+}
+
+/* ---- Questions --------------------------------------------------------- */
+
+.quiz-panel{
+  margin:48px 0 80px;
+}
+
+.quiz-progress{
+  display:grid;
+  gap:10px;
+  margin-bottom:32px;
+}
+
+.quiz-progress-label{
+  margin:0;
+  color:var(--parchment-dim);
+}
+
+.quiz-progress progress{
+  appearance:none;
+  width:100%;
+  height:6px;
+  border:0;
+  border-radius:3px;
+  background:var(--bark);
+  overflow:hidden;
+}
+
+.quiz-progress progress::-webkit-progress-bar{ background:var(--bark); }
+.quiz-progress progress::-webkit-progress-value{ background:var(--brass); }
+.quiz-progress progress::-moz-progress-bar{ background:var(--brass); }
+
+.quiz-fieldset{
+  min-width:0;
+  margin:0;
+  padding:0;
+  border:0;
+}
+
+/* Bootstrap floats the legend and sizes it; this one just holds the h2. */
+.quiz-fieldset legend{
+  float:none;
+  width:100%;
+  margin:0 0 22px;
+  padding:0;
+  font-size:inherit;
+}
+
+.quiz-question{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(1.4rem, 3vw, 1.9rem);
+  line-height:1.25;
+  color:var(--parchment);
+}
+
+/* Focus moves here on each step so screen readers announce the question.
+ * It's a heading, not a control, so it needs no visible ring (WCAG 2.4.7
+ * covers interactive components). */
+.quiz-question:focus{ outline:none; }
+
+/* Two by two; one column once the cards would get too narrow to read. */
+.quiz-options{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:16px;
+}
+
+@media (max-width:720px){
+  .quiz-options{ grid-template-columns:1fr; }
+}
+
+/* A whole option card is the click target; the radio inside carries state. */
+.quiz-option{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:22px 24px;
+  background:var(--bark);
+  border:1px solid var(--line);
+  border-radius:var(--radius-card);
+  color:var(--parchment);
+  font-size:1.05rem;
+  line-height:1.5;
+  cursor:pointer;
+  transition:background var(--speed-fast) var(--ease),
+             border-color var(--speed-fast) var(--ease);
+}
+
+.quiz-option:hover{
+  background:var(--bark-2);
+  border-color:var(--brass-line-lit);
+}
+
+/* Chosen: brass edge and a filled radio, so state never rests on colour alone. */
+.quiz-option:has(input:checked){
+  background:var(--bark-2);
+  border-color:var(--brass);
+  box-shadow:inset 0 0 0 1px var(--brass);
+}
+
+.quiz-option:has(input:focus-visible){
+  outline:2px solid var(--brass);
+  outline-offset:3px;
+}
+
+.quiz-option input{
+  appearance:none;
+  flex-shrink:0;
+  display:grid;
+  place-content:center;
+  width:22px;
+  height:22px;
+  margin:0;
+  border:2px solid var(--parchment-dim);
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.quiz-option input::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--brass);
+  transform:scale(0);
+  transition:transform var(--speed-fast) var(--ease);
+}
+
+.quiz-option input:checked{ border-color:var(--brass); }
+.quiz-option input:checked::before{ transform:scale(1); }
+
+/* The card shows focus for the radio. */
+.quiz-option input:focus-visible{ outline:none; }
+
+.quiz-answer-error{
+  margin:18px 0 0;
+  padding-left:14px;
+  border-left:3px solid var(--brass);
+  color:var(--parchment);
+}
+
+/* ---- Result ------------------------------------------------------------ */
+
+.quiz-result{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:48px;
+  align-items:center;
+  padding:56px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.quiz-result-figure{ margin:0; }
+
+.quiz-result-figure img{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid var(--line);
+  border-radius:var(--radius-card);
+}
+
+.quiz-result .post-title{ max-width:none; }
+
+.quiz-result-description{
+  max-width:60ch;
+  margin:0;
+  font-size:1.12rem;
+  line-height:1.75;
+  color:var(--parchment);
+}
+
+@media (max-width:860px){
+  .quiz-result{
+    grid-template-columns:1fr;
+    gap:32px;
+  }
+}
+
+/* ---- Postcard ---------------------------------------------------------- */
+
+.quiz-postcard{ margin-bottom:80px; }
+
+.quiz-postcard-preview{
+  display:block;
+  width:100%;
+  max-width:900px;
+  height:auto;
+  border-radius:var(--radius-card);
+  box-shadow:0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Reports copy/share outcomes; reserves its line so nothing jumps. */
+.quiz-action-status{
+  min-height:1.6em;
+  margin:14px 0 0;
+  color:var(--parchment-dim);
+}

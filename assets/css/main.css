@@ -29,6 +29,10 @@
 @import url("components/social.css");
 @import url("components/post.css");
 @import url("components/part-list.css");
+@import url("components/post-aside.css");
+@import url("components/button.css");
+@import url("components/lost-trail.css");
+@import url("components/quiz.css");
 
 /* ---- Utilities -------------------------------------------------------- */
 @import url("utilities/a11y.css");

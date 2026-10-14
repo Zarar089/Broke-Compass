@@ -12,6 +12,8 @@
   margin:70px 0 30px;
 }
 
+/* h1 where the section head opens the page (the quiz hub). */
+.section-head h1,
 .section-head h2{
   font-family:var(--font-display);
   font-weight:600;

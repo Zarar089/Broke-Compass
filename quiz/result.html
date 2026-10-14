@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Quiz Result — Broke Compass</title>
+<meta name="description" content="What kind of mountain lover are you? Fifteen questions from Broke Compass, one honest answer, and a postcard to keep.">
+<meta name="author" content="Zarar Mahmud">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#212f3f">
+
+<link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+
+<!-- Social previews (Open Graph: Facebook, WhatsApp, LinkedIn; Twitter/X card) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Broke Compass">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Your Quiz Result — Broke Compass">
+<meta property="og:description" content="What kind of mountain lover are you? Fifteen questions from Broke Compass, one honest answer, and a postcard to keep.">
+<meta property="og:url" content="https://broke-compass.netlify.app/quiz/">
+<meta property="og:image" content="https://broke-compass.netlify.app/assets/images/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Broke Compass — a brass compass beside the words: Planned like it matters. Spent like it doesn't.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@zarar26896">
+<meta name="twitter:title" content="Your Quiz Result — Broke Compass">
+<meta name="twitter:description" content="What kind of mountain lover are you? Fifteen questions from Broke Compass, one honest answer, and a postcard to keep.">
+<meta name="twitter:image" content="https://broke-compass.netlify.app/assets/images/og-card.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Bootstrap first, so the site's own styles in main.css win any tie. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="container-fluid wrap">
+
+  <!-- ============================ MASTHEAD ============================ -->
+  <header class="nav">
+    <div class="nav-row">
+      <a href="../index.html" class="brand">
+        <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <circle cx="20" cy="20" r="17" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 8 L23 20 L20 32 L17 20 Z" fill="currentColor"/>
+          <circle cx="20" cy="20" r="2.4" fill="#e8e2d1"/>
+        </svg>
+        Broke Compass
+      </a>
+      <nav class="nav-links label" aria-label="Sections">
+        <a href="../index.html#entries">Journal</a>
+        <a href="../index.html#routes">Routes</a>
+        <a href="../index.html#about">About</a>
+        <a href="index.html" aria-current="page">Quiz</a>
+        <a href="#contact">Find Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+  <div class="quiz-loader" role="status" data-quiz-loader>
+    <img class="quiz-loader-compass" src="../assets/images/compass.svg" alt="" width="112" height="112">
+    <p class="quiz-loader-label label" data-quiz-loader-label>Loading your result…</p>
+  </div>
+
+  <div class="lost-trail" data-quiz-empty hidden>
+    <img class="lost-trail-art" src="../assets/images/compass-lost.svg" alt="" width="240" height="180">
+    <p class="lost-trail-title">Lost the trail</p>
+    <p class="lost-trail-message" role="alert" data-quiz-empty-message></p>
+    <div class="lost-trail-actions">
+      <button type="button" class="button" data-quiz-retry>Try again</button>
+      <a class="button is-ghost" href="index.html">All quizzes</a>
+    </div>
+  </div>
+
+  <!-- =============================== RESULT ============================= -->
+  <article class="quiz-result" data-result hidden>
+    <figure class="quiz-result-figure">
+      <img data-result-image alt="" width="1408" height="768">
+    </figure>
+    <div class="quiz-result-body">
+      <p class="eyebrow label"><span>Your result · <span data-result-kicker></span></span></p>
+      <h1 class="post-title" data-result-title></h1>
+      <p class="quiz-result-description" data-result-description></p>
+      <div class="quiz-actions">
+        <a class="button is-ghost" href="index.html" data-retake>Retake the quiz</a>
+        <a class="button is-ghost" href="index.html">More quizzes</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================== POSTCARD ============================ -->
+  <section class="quiz-postcard" aria-labelledby="postcard-heading" data-postcard hidden>
+    <div class="section-head">
+      <h2 id="postcard-heading">Send it as a postcard</h2>
+    </div>
+    <p class="section-lede">Your result, written up as a postcard. Save it and post it wherever you like, or share it straight from your phone.</p>
+
+    <img class="quiz-postcard-preview" data-postcard-preview alt="">
+
+    <div class="quiz-actions">
+      <a class="button" data-postcard-download>Download postcard</a>
+      <button type="button" class="button is-ghost" data-postcard-share hidden>Share postcard</button>
+      <button type="button" class="button is-ghost" data-copy-link>Copy link</button>
+    </div>
+    <p class="quiz-action-status" role="status" data-action-status></p>
+  </section>
+
+  </main>
+
+  <!-- ============================== FOOTER ============================= -->
+  <footer class="site-footer" id="contact">
+    <div class="social-row footer-socials">
+      <a class="social-item" href="https://www.facebook.com/zarar.mahmud.26" target="_blank" rel="noopener noreferrer">
+        <div class="social-badge">
+          <svg class="icon" viewBox="0 0 48 48" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M20 40V20a6 6 0 0 1 6-6h4"/>
+            <path d="M14 24h12"/>
+          </svg>
+        </div>
+        <span class="social-label label">Facebook<span class="visually-hidden"> (opens in a new tab)</span></span>
+      </a>
+      <a class="social-item" href="https://www.instagram.com/zarar089/" target="_blank" rel="noopener noreferrer">
+        <div class="social-badge">
+          <svg class="icon" viewBox="0 0 48 48" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="9" y="12" width="30" height="24" rx="7"/>
+            <circle cx="24" cy="24" r="6"/>
+            <circle cx="32" cy="17" r="1.3" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <span class="social-label label">Instagram<span class="visually-hidden"> (opens in a new tab)</span></span>
+      </a>
+      <a class="social-item" href="https://x.com/zarar26896" target="_blank" rel="noopener noreferrer">
+        <div class="social-badge">
+          <svg class="icon" viewBox="0 0 48 48" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true" focusable="false">
+            <path d="M12 12 L36 36 M36 12 L12 36"/>
+          </svg>
+        </div>
+        <span class="social-label label">X<span class="visually-hidden"> (opens in a new tab)</span></span>
+      </a>
+    </div>
+
+    <div class="foot-row">
+      <svg class="icon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle cx="20" cy="20" r="17" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M20 8 L23 20 L20 32 L17 20 Z" fill="currentColor"/>
+      </svg>
+      <div class="foot-note">© Broke Compass — written by Zarar Mahmud, budget be damned.</div>
+      <div class="foot-note">Journal</div>
+    </div>
+
+    <p class="ai-note">I am not a writer, only someone who was there. These words are a small dance between my memory and a patient machine — I lead with what happened, it helps me find the rhythm to say it. The sketch is mine. The paint, some of it, is borrowed.</p>
+  </footer>
+
+</div>
+
+<script type="module" src="../assets/js/quiz/result.js"></script>
+
+</body>
+</html>

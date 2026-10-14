@@ -1,0 +1,20 @@
+<!-- "Lost the trail": the quiz's empty / error state. Footsteps wander off,
+     the compass ring is broken, the needle points nowhere in particular.
+     Colours are the site tokens: brass #e2a96b, parchment #e8e2d1, rust #b5651d, ink #212f3f. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <path fill="none" d="M10 164 C 46 156, 34 118, 72 108 S 112 122, 114 98" stroke="#b5651d" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.5 11"/>
+  <g transform="translate(162 82)">
+    <circle fill="none" r="58" stroke="#e2a96b" stroke-width="3.5" stroke-dasharray="64 16" opacity="0.85"/>
+    <circle fill="none" r="45" stroke="#e8e2d1" stroke-width="1.5" opacity="0.25"/>
+    <g transform="rotate(122)">
+      <path d="M0 -40 L9 0 L0 40 L-9 0 Z" fill="#e2a96b"/>
+      <path d="M0 -40 L9 0 L0 0 Z" fill="#f0c48f"/>
+      <path d="M0 40 L-9 0 L0 0 Z" fill="#b5651d"/>
+    </g>
+    <circle r="5.5" fill="#212f3f" stroke="#e8e2d1" stroke-width="1.5"/>
+  </g>
+  <g fill="#e8e2d1" font-family="Georgia, serif" font-style="italic">
+    <text x="214" y="30" font-size="28" opacity="0.6">?</text>
+    <text x="96" y="40" font-size="18" opacity="0.35">?</text>
+  </g>
+</svg>

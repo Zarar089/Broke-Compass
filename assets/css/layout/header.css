@@ -20,6 +20,8 @@
   display:flex;
   align-items:center;
   justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px 30px;
 }
 
 .brand{
@@ -42,7 +44,8 @@
 
 .nav-links{
   display:flex;
-  gap:30px;
+  flex-wrap:wrap;
+  gap:8px 30px;
 }
 
 .nav-links a{
@@ -54,7 +57,18 @@
              border-color var(--speed-fast) var(--ease);
 }
 
-.nav-links a:hover{
+.nav-links a:hover,
+.nav-links a[aria-current="page"]{
   color:var(--brass);
   border-color:var(--brass);
+}
+
+/**
+ * Narrow screens: links wrap under the brand instead of overflowing, and
+ * the masthead scrolls away with the page. Wrapped, it would be too tall
+ * to stay pinned without hiding what's being read or focused (WCAG 2.4.11).
+ */
+@media (max-width:560px){
+  .nav{ position:relative; }
+  .nav-links{ gap:8px 20px; }
 }

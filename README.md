@@ -9,20 +9,34 @@ CDN ahead of `main.css`. Every page sits in a Bootstrap `.container-fluid`,
 so the layout spans the full width of the screen, and Bootstrap's utility
 classes are there if you want them. The site's own styles load second and
 win any tie. Open `index.html` directly in a browser, or edit any of it in a
-text editor.
+text editor. (The quiz pages are the one exception: they load their data
+with JavaScript modules, which browsers won't run from `file://`. See
+[Quiz](#quiz).)
 
 ## Project structure
 
 ```
 index.html                  markup only — no inline styles
+404.html                    "Lost the trail": served for any missing page
 sitemap.xml                 every published page, for search engines
 robots.txt                  points crawlers at the sitemap
 assets/
   js/
     compass.js              the hero compass needle, pulled toward the cursor like a magnet
+    quiz/
+      api.js                read-only Firebase Realtime Database access (REST, no SDK)
+      page.js               shared by the quiz pages: the loader and the empty state
+      hub.js                quiz/index.html: lists the quizzes
+      play.js               quiz/play.html: one question per screen, saves progress
+      result.js             quiz/result.html: the result, plus download/share
+      postcard.js           draws a result as a postcard on a canvas (JPEG)
+      random-quiz.js        post sidebars: swaps in a random quiz
   icons/                    favicon.svg, favicon-32.png, apple-touch-icon.png
   images/
     og-card.png             1200×630 preview shown when a link is shared
+    mountain_lover_quiz/    result_1.webp … result_15.webp, one per quiz result
+    compass.svg             the homepage compass, as the quiz loading spinner
+    compass-lost.svg        "Lost the trail": the 404 page and the quiz error state
   css/
     main.css                the site's stylesheet (after Bootstrap); @imports the rest, in order
     base/
@@ -42,9 +56,18 @@ assets/
       about.css             about spread + pull quote
       social.css            social stamps
       post.css              post page: header, prose, previous/next links
-      part-list.css         the list of parts on a series page
+      part-list.css         the list of parts on a series page (also the quiz cards)
+      post-aside.css        the sidebar beside a post: other journals, a quiz
+      button.css            brass pill buttons and their ghost variant
+      lost-trail.css        "Lost the trail" box: the 404 page and quiz errors
+      quiz.css              quiz questions, result spread, postcard
     utilities/
       a11y.css              .visually-hidden, reduced-motion
+quiz/
+  index.html                quiz hub: every quiz in the database
+  play.html                 ?quiz=N, the quiz itself
+  result.html               ?id=N, one result; shareable, not indexed
+data/                       Firebase exports (git-ignored, never deployed)
 posts/
   abc-trek/
     index.html              series page: every published part, with a teaser
@@ -134,10 +157,109 @@ change the title, route, read time and prose, link it from the series page,
 and point the previous part's "next" link at it. Then update its SEO tags
 (see below) and add it to `sitemap.xml`.
 
+**Layout.** Under the full-width header, a post page splits into two
+Bootstrap columns: the story in `col-lg-8`, and a sidebar in `col-lg-4`
+(`<aside class="post-aside">`). They stack on screens narrower than 992px.
+The sidebar lists the *other* journals (never the one you're reading), then
+a "Take a quiz" card. That card links to the quiz hub in the HTML, and
+`random-quiz.js` swaps in a random quiz from the database.
+
+The sidebar is plain HTML, copied into every post page like the header and
+footer. When a journal gets its own page, update its sidebar entry on the
+*other* journals' pages: change `<div class="aside-journal">` to
+`<a class="aside-journal" href="…">` and drop the "Coming soon" pill. A new
+journal also needs adding to every other journal's sidebar.
+
 The other homepage cards still link to `#`. Their pages can follow the same
 shape under `posts/` (e.g. `posts/sikkim.html`).
 
+## Quiz
+
+Quizzes live in Firebase Realtime Database and are read through its REST
+API, so there's no SDK, no API key and no build step. The database URL is
+the `DB_URL` constant at the top of `assets/js/quiz/api.js`.
+
+**Data shape.** Five collections, each keyed by id, every row carrying a
+`quiz_id`:
+
+| collection       | fields                                                |
+| ---------------- | ----------------------------------------------------- |
+| `quizzes`        | `quiz_id`, `title`, `image_dir`                       |
+| `questions`      | `question_id`, `quiz_id`, `title`                     |
+| `options`        | `question_id`, `quiz_id`, `text`, `score`             |
+| `score_mappings` | `quiz_id`, `min_score`, `max_score`, `result_id`      |
+| `results`        | `result_id`, `quiz_id`, `title`, `description`, `image_url` |
+
+A reader's answers are added up, and the score band they fall in picks the
+result. Options are shuffled on screen, so their order never gives the
+scoring away.
+
+**Rules.** Reads are public, writes are closed, and each collection is
+indexed on `quiz_id` so a quiz's rows come back in one filtered request:
+
+```json
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "questions":      { ".indexOn": "quiz_id" },
+    "options":        { ".indexOn": "quiz_id" },
+    "results":        { ".indexOn": "quiz_id" },
+    "score_mappings": { ".indexOn": "quiz_id" }
+  }
+}
+```
+
+**Images.** `image_url` is relative to `assets/images/`, e.g.
+`mountain_lover_quiz/result_7.webp`. Result images are WebP (quality ~80,
+around 130 KB each). Convert new ones with
+`convert in.jpeg -strip -quality 80 out.webp`. `og-card.png` and the icons
+stay PNG, because social-preview crawlers and iOS home-screen icons need PNG
+or JPEG.
+
+**Adding a quiz.** Add the rows in the Firebase console (or import JSON),
+put its images in `assets/images/<image_dir>/`, and it shows up on the hub
+by itself. Keep exports in `data/`. It's git-ignored because an export is
+the answer key.
+
+**Postcards.** The result page draws a 1800px-wide landscape postcard on a
+canvas (illustration on top, result underneath, stamp and postmark), shows
+a preview, and offers Download, Share (the phone's share sheet, where it
+supports files) and Copy link.
+
+**Loading and errors.** While a quiz page waits on the database, it shows
+the compass spinner (`.quiz-loader`), which turns and breathes in and out
+and holds still for reduced motion. If loading fails for any reason, the
+page shows the "Lost the trail" empty state (`.lost-trail`) with the reason.
+A dropped connection or server error gets a Try again button. Missing data
+(a bad link, an empty quiz) gets a way back instead, since retrying won't
+help. `load()` in `page.js` wires both, so a new quiz page only needs the
+two blocks of markup from `quiz/play.html`.
+
+**Running it locally.** Serve the folder over http, e.g.
+`python3 -m http.server`, then open `http://localhost:8000/quiz/`.
+
+## Accessibility
+
+The site targets **WCAG 2.2 AA** throughout:
+
+- Every text colour in `tokens.css` reaches at least 4.5:1 on every
+  surface, including `--bark-2`, the lightest. `--rust` doesn't, so it's
+  for decoration only (rules, rivets), never text. Re-check the ratios
+  before changing a colour.
+- Every page has a "Skip to content" link, a `<main id="main">` landmark,
+  and `aria-current="page"` on the nav link for the section you're in.
+- Links that open a new tab say so to screen readers.
+- The masthead stops being sticky on narrow screens, where it wraps too
+  tall to stay pinned without covering content.
+- The quiz uses native radio buttons in a fieldset. Focus moves to each
+  new question, errors are announced, and every control is at least 44px.
+- Motion respects `prefers-reduced-motion` (`utilities/a11y.css`).
+
 ## SEO
+
+The quiz hub (`quiz/`) is indexed and in the sitemap. `play.html` and
+`result.html` are `noindex`, since their content comes from the database.
 
 Every page's `<head>` carries, in this order:
 
@@ -158,6 +280,13 @@ keywords, canonical, `og:`/`twitter:` title, description and URL, the
 `article:tag`s, and the JSON-LD (headline, description, URLs, `wordCount`,
 `timeRequired`, places, and the third breadcrumb). Add the series page's
 `ItemList` entry for it too.
+
+**`404.html`** is what Netlify (and GitHub Pages) serve for any URL that
+doesn't exist, at any depth, so its links and assets are root-absolute
+(`/assets/…`). That works while the site sits at the root of its domain; it
+won't style when opened from the file system, and it would need its paths
+prefixed if the site ever moved under a subfolder. It's `noindex` and stays
+out of `sitemap.xml`.
 
 **The site lives at `https://broke-compass.netlify.app/`.** Canonical, Open
 Graph, JSON-LD and sitemap URLs are all absolute and built on that address. If

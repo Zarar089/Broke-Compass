@@ -1,6 +1,8 @@
 /**
  * A single post page: the header block, the running prose, and the
- * previous / next links that close it.
+ * previous / next links that close it. Below the header, the story takes
+ * eight columns and the sidebar (post-aside.css) the other four; they stack
+ * on narrower screens.
  */
 
 /* ---- Header ------------------------------------------------------------ */
@@ -38,15 +40,29 @@
 
 .post-head .entry-tags{ margin:0; }
 
+/* ---- Layout: story and sidebar ---------------------------------------- */
+
+/* A generous gap below the header's rule, so the sidebar's small label
+ * doesn't crowd it. Both columns move together and stay level. */
+.post-layout{
+  --bs-gutter-x:clamp(28px, 4vw, 64px);
+  margin-top:72px;
+}
+
+/* A section heading above the columns already spaces them from the header. */
+.section-head + .post-layout{ margin-top:0; }
+
+/* The layout sets the top spacing; the story shouldn't add more. */
+.post-layout .prose{ margin-top:0; }
+
 /* ---- Prose ------------------------------------------------------------- */
 
 /**
- * Narrow measure for long reading. The first paragraph opens with a brass
- * drop cap, as on the first page of a notebook entry.
+ * Fills the story column. The first paragraph opens with a brass drop cap,
+ * as on the first page of a notebook entry.
  */
 .prose{
-  max-width:68ch;
-  margin:48px auto 0;
+  margin:48px 0 0;
   font-size:1.12rem;
   line-height:1.8;
   color:var(--parchment);
