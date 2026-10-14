@@ -3,3 +3,6 @@
 
 # Raw story drafts — unfinished text must not be published
 posts/text_posts/
+
+# Firebase exports — the quiz answer key must not be deployed
+data/

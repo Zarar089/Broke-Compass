@@ -13,6 +13,27 @@
   border:0;
 }
 
+/**
+ * "Skip to content": the first stop in the tab order, hidden until focused,
+ * so keyboard users can jump past the masthead (WCAG 2.4.1).
+ */
+.skip-link{
+  position:fixed;
+  top:12px;
+  left:12px;
+  z-index:100;
+  padding:10px 16px;
+  border-radius:var(--radius-card);
+  background:var(--brass);
+  color:var(--ink);
+  font-family:var(--font-mono);
+  font-size:0.85rem;
+  text-decoration:none;
+  transform:translateY(-200%);
+}
+
+.skip-link:focus{ transform:none; }
+
 /* Purely decorative SVG should never be announced or focused. */
 .icon{
   flex-shrink:0;

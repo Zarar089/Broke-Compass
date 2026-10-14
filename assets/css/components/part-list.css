@@ -55,9 +55,10 @@
 .part-card-kicker{
   margin:0;
   font-size:0.66rem;
-  color:var(--rust);
+  color:var(--brass);
 }
 
+.part-card h2,
 .part-card h3{
   font-family:var(--font-display);
   font-weight:600;

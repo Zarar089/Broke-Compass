@@ -1,0 +1,66 @@
+<!-- "Still being written": the work-in-progress pages. An open journal lying
+     on a table, one page full, the other stopped partway down, the pen put
+     down beside it, a mug going cold and a crumpled draft in the corner.
+     Colours are the site tokens: brass #e2a96b, parchment #e8e2d1, rust #b5651d,
+     ink #212f3f, bark #2c4155, bark-2 #304860. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <!-- Table -->
+  <path d="M24 64 H216 L240 150 H0 Z" fill="#304860"/>
+  <rect y="150" width="240" height="14" fill="#2c4155"/>
+  <g stroke="#e8e2d1" stroke-width="1" opacity="0.1">
+    <path d="M14 100 H226"/>
+    <path d="M8 122 H232"/>
+    <path d="M2 142 H238"/>
+  </g>
+
+  <!-- Mug, going cold -->
+  <g stroke="#e8e2d1" stroke-width="1.5" stroke-linecap="round" opacity="0.35">
+    <path d="M196 42 q-4 -6 0 -12 t0 -12"/>
+    <path d="M204 40 q4 -6 0 -12 t0 -12"/>
+  </g>
+  <path d="M210 55 h4 a6 6 0 0 1 0 12 h-4" stroke="#e8e2d1" stroke-width="3"/>
+  <rect x="190" y="48" width="20" height="26" rx="3" fill="#e8e2d1"/>
+  <rect x="190" y="58" width="20" height="5" fill="#b5651d"/>
+  <ellipse cx="200" cy="48" rx="10" ry="2.5" fill="#212f3f"/>
+
+  <!-- Journal: cover, page edges, pages, spine, ribbon -->
+  <path d="M56 72 Q90 67 120 78 Q150 67 184 72 L212 134 Q163 128 120 142 Q77 128 28 134 Z" fill="#b5651d"/>
+  <path d="M31 132 Q77 127 120 140 Q163 127 209 132" stroke="#e8e2d1" stroke-width="1.2" opacity="0.5"/>
+  <path d="M60 76 Q90 72 120 82 V137 Q77 125 34 130 Z" fill="#e8e2d1"/>
+  <path d="M120 82 Q150 72 180 76 L206 130 Q163 125 120 137 Z" fill="#e8e2d1"/>
+  <path d="M120 82 V137" stroke="#212f3f" stroke-width="1.5" opacity="0.3"/>
+  <path d="M117 138 L116 156 L119.5 152 L123 156 L122 138" fill="#e2a96b"/>
+
+  <!-- Left page: written to the bottom -->
+  <g stroke="#212f3f" stroke-width="2" stroke-linecap="round" opacity="0.55">
+    <path d="M62 87 L113 91" stroke-dasharray="12 4 8 4 16 4 6 4"/>
+    <path d="M58 95 L113 99" stroke-dasharray="8 4 16 4 10 4 12 4"/>
+    <path d="M54 103 L113 107" stroke-dasharray="18 4 6 4 14 4 8 4"/>
+    <path d="M50 111 L113 115" stroke-dasharray="10 4 12 4 6 4 20 4"/>
+    <path d="M46 119 L100 122" stroke-dasharray="14 4 8 4 18 4"/>
+  </g>
+
+  <!-- Right page: stops partway down -->
+  <g stroke="#212f3f" stroke-width="2" stroke-linecap="round" opacity="0.55">
+    <path d="M127 89 L179 85" stroke-dasharray="10 4 14 4 8 4 12 4"/>
+    <path d="M127 97 L183 93" stroke-dasharray="16 4 6 4 12 4 14 4"/>
+    <path d="M127 105 L152 103.2" stroke-dasharray="8 4 12 4"/>
+  </g>
+  <circle cx="156.5" cy="103" r="1.6" fill="#212f3f" opacity="0.55"/>
+
+  <!-- Pen, put down beside the journal -->
+  <g transform="translate(180 152) rotate(-24)">
+    <path d="M0 -2.6 L-11 0 L0 2.6 Z" fill="#e8e2d1"/>
+    <circle cx="-10.5" r="0.9" fill="#212f3f"/>
+    <rect width="50" height="7" y="-3.5" rx="3.5" fill="#e2a96b"/>
+    <rect width="10" height="7" y="-3.5" fill="#b5651d"/>
+    <rect x="44" width="6" height="7" y="-3.5" rx="2" fill="#b5651d"/>
+    <path d="M32 -4.5 H44" stroke="#e8e2d1" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+
+  <!-- A crumpled draft -->
+  <g transform="translate(22 142)">
+    <circle r="8" fill="#e8e2d1" opacity="0.9"/>
+    <path d="M-5 -3 L-1 -1 L3 -5 M-4 4 L0 1 L5 3 M0 1 L1 7" stroke="#212f3f" stroke-width="1" stroke-linecap="round" opacity="0.35"/>
+  </g>
+</svg>

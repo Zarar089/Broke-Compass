@@ -7,21 +7,26 @@
 :root{
   /* ---- Palette ---------------------------------------------------------
    * Washed-denim ground, warm bone type, brass and copper accents.
-   * Never pure white, never pure black. */
+   * Never pure white, never pure black.
+   *
+   * Tuned for WCAG 2.2 AA: every text colour below reaches at least 4.5:1
+   * on every surface (--ink, --bark, --bark-2), the lightest of which is
+   * --bark-2. Re-check the ratios before changing any of them.
+   * --rust fails as text, so it is for decoration only (rules, rivets). */
   --ink:            #212f3f;   /* page background — deep indigo denim */
   --bark:           #2c4155;   /* card / panel background — washed denim */
-  --bark-2:         #35506a;   /* card hover / raised panel — lighter wash */
+  --bark-2:         #304860;   /* card hover / raised panel — lighter wash */
   --parchment:      #e8e2d1;   /* primary text — warm bone */
-  --parchment-dim:  #93a2ae;   /* secondary text — cool denim-grey */
-  --brass:          #d98f3f;   /* primary accent — gold contrast-stitch thread */
-  --rust:           #b5651d;   /* secondary accent — copper rivet */
+  --parchment-dim:  #aab6bf;   /* secondary text — cool denim-grey (4.6:1 on --bark-2) */
+  --brass:          #e2a96b;   /* primary accent — gold contrast-stitch thread (4.6:1 on --bark-2) */
+  --rust:           #b5651d;   /* secondary accent — copper rivet; decorative only */
 
   /* Derived from the accents. Kept as tokens so the alpha is tuned in
    * one place rather than guessed at each call site. */
   --line:           rgba(232, 226, 209, 0.14);
-  --brass-line:     rgba(217, 143, 63, 0.40);
-  --brass-line-lit: rgba(217, 143, 63, 0.45);
-  --brass-ring:     rgba(217, 143, 63, 0.50);
+  --brass-line:     rgba(226, 169, 107, 0.40);
+  --brass-line-lit: rgba(226, 169, 107, 0.45);
+  --brass-ring:     rgba(226, 169, 107, 0.50);
   --parchment-line: rgba(232, 226, 209, 0.40);
 
   /* ---- Type ------------------------------------------------------------ */

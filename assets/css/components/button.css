@@ -1,0 +1,46 @@
+/**
+ * Buttons and button-styled links: a brass pill for the main action,
+ * .is-ghost for the rest. At least 44px tall, per the site's AA rules.
+ */
+.button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:12px 24px;
+  font-family:var(--font-mono);
+  font-size:0.8rem;
+  letter-spacing:var(--label-tracking);
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--ink);
+  background:var(--brass);
+  border:1px solid var(--brass);
+  border-radius:var(--radius-pill);
+  cursor:pointer;
+  transition:background var(--speed-fast) var(--ease),
+             border-color var(--speed-fast) var(--ease),
+             color var(--speed-fast) var(--ease);
+}
+
+.button:hover{
+  background:var(--parchment);
+  border-color:var(--parchment);
+  color:var(--ink);
+}
+
+.button.is-ghost{
+  background:transparent;
+  border-color:var(--parchment-line);
+  color:var(--parchment);
+}
+
+.button.is-ghost:hover{
+  border-color:var(--brass);
+  color:var(--brass);
+}
+
+.button:disabled{
+  cursor:progress;
+  opacity:0.7;
+}
