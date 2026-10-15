@@ -1,19 +1,34 @@
 /**
  * Sticky masthead: brand mark on the left, section links on the right.
- * The gradient background fades the page out underneath rather than
- * cutting a hard band across it as content scrolls up.
+ *
+ * A full-width frosted band: it steps out of .wrap's gutter to reach both
+ * edges of the screen, and the page blurs through it faintly as it scrolls
+ * under. It is never fully transparent, because the links would then sit on
+ * whatever happens to be beneath them and lose contrast (WCAG 1.4.3);
+ * --ink-glass is opaque enough to keep them at AA over any backdrop.
  */
 
 /* Bootstrap also defines .nav (a flex, wrapping link list); display:block
  * and the resets below keep this a plain sticky band around .nav-row. */
 .nav{
   display:block;
-  margin-bottom:0;
+  margin:0 calc(-1 * var(--gutter));
+  padding:18px var(--gutter);
   position:sticky;
   top:0;
   z-index:20;
-  background:linear-gradient(var(--ink) 78%, transparent);
-  padding:22px 0 14px;
+  background:var(--ink-glass);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+
+@media (prefers-reduced-transparency:reduce){
+  .nav{
+    background:var(--ink);
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+  }
 }
 
 .nav-row{
