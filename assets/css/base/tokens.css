@@ -28,6 +28,9 @@
   --brass-line-lit: rgba(226, 169, 107, 0.45);
   --brass-ring:     rgba(226, 169, 107, 0.50);
   --parchment-line: rgba(232, 226, 209, 0.40);
+  /* Masthead ground: --ink at 90%. Even over pure white the blend is about
+   * #374452, where --parchment-dim (4.9:1) and --brass (5.0:1) still pass AA. */
+  --ink-glass:      rgba(33, 47, 63, 0.90);
 
   /* ---- Type ------------------------------------------------------------ */
   --font-display: 'Fraunces', Georgia, serif;         /* headings, pull quotes */
