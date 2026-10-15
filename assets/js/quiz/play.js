@@ -4,13 +4,15 @@
  * Each question is a fieldset of native radio buttons, so keyboard and
  * screen-reader behaviour comes from the browser. Answers are saved to
  * sessionStorage as they're picked, so a refresh resumes where the reader
- * left off. The last answer adds up the scores and opens the result page.
+ * left off. The last answer adds up the scores, saves the result as earned,
+ * and opens the result page.
  *
  * Options are shuffled, so the order never gives the scoring away. Moving
  * between questions slides the old one out and the new one in, in the
  * direction of travel, unless the reader prefers reduced motion.
  */
 import { getQuestions, getQuiz, getResultIdForScore, NotFoundError } from './api.js';
+import { saveEarnedResult } from './earned-result.js';
 import { idParam, load, showEmpty, showLoader } from './page.js';
 
 const quizId = idParam('quiz');
@@ -169,8 +171,9 @@ async function finish() {
   try {
     const score = questions.reduce((total, q) => total + chosenOption(q).score, 0);
     const resultId = await getResultIdForScore(quizId, score);
+    saveEarnedResult(quizId, resultId);
     clearState();
-    location.assign(`result.html?id=${resultId}`);
+    location.assign(`result.html?quiz=${quizId}`);
   } catch (error) {
     showEmpty(error, finish);
   }

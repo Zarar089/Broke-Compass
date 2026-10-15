@@ -28,7 +28,8 @@ assets/
       page.js               shared by the quiz pages: the loader and the empty state
       hub.js                quiz/index.html: lists the quizzes
       play.js               quiz/play.html: one question per screen, saves progress
-      result.js             quiz/result.html: the result, plus download/share
+      earned-result.js      the result a reader earned per quiz; gates the result page
+      result.js             quiz/result.html: the earned result, plus download/share
       postcard.js           draws a result as a postcard on a canvas (JPEG)
       random-quiz.js        post sidebars: swaps in a random quiz
   icons/                    favicon.svg, favicon-32.png, apple-touch-icon.png
@@ -68,7 +69,7 @@ assets/
 quiz/
   index.html                quiz hub: every quiz in the database
   play.html                 ?quiz=N, the quiz itself
-  result.html               ?id=N, one result; shareable, not indexed
+  result.html               ?quiz=N, the result you earned; only after playing, not indexed
 data/                       Firebase exports (git-ignored, never deployed)
 posts/
   abc-trek/
@@ -249,10 +250,20 @@ including the quiz's `last_updated`, put its images in `assets/images/<image_dir
 by itself. Keep exports in `data/`. It's git-ignored because an export is
 the answer key.
 
+**Earned results.** The result page shows only a result the reader earned
+by finishing the quiz in this browser. `play.js` saves it in `localStorage`
+(`broke-compass:quiz-N-result`, one per quiz) and opens `result.html?quiz=N`;
+`result.js` reads it back. Nothing in the URL names a result, so it can't be
+opened by editing the link. Without one, the page shows "Lost the trail" and
+a nudge to take the quiz. Finishing the quiz again, whether from Retake or
+the hub, replaces it. This keeps casual visitors out, but it isn't a lock:
+the database is publicly readable, so treat results as hidden, not secret.
+
 **Postcards.** The result page draws a 1800px-wide landscape postcard on a
 canvas (illustration on top, result underneath, stamp and postmark), shows
 a preview, and offers Download, Share (the phone's share sheet, where it
-supports files) and Copy link.
+supports files) and Copy quiz link. Both share the quiz's play link, not the
+result page, so whoever opens it plays the quiz to get their own result.
 
 **Loading and errors.** While a quiz page waits on the database, it shows
 the compass spinner (`.quiz-loader`), which turns and breathes in and out

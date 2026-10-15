@@ -1,13 +1,16 @@
 /**
- * Shows one quiz result (result.html?id=N) and turns it into a postcard to
- * download or share. The result lives in the URL, so a shared link shows
- * the same result to whoever opens it.
+ * Shows the result the reader earned on a quiz (result.html?quiz=N) and turns
+ * it into a postcard to download or share. The result comes from the reader's
+ * own play-through (earned-result.js), not the URL, so the page shows nothing
+ * until the quiz has been played. Shared links point at the quiz instead.
  */
 import { getQuiz, getResult, NotFoundError, resultImageUrl } from './api.js';
+import { readEarnedResult } from './earned-result.js';
 import { idParam, load } from './page.js';
 import { renderPostcard } from './postcard.js';
 
-const resultId = idParam('id');
+const quizId = idParam('quiz');
+const quizUrl = new URL(`play.html?quiz=${quizId}`, location.href).href;
 
 const article = document.querySelector('[data-result]');
 const kicker = article.querySelector('[data-result-kicker]');
@@ -52,7 +55,7 @@ async function preparePostcard(quiz, result) {
     shareButton.hidden = false;
     shareButton.addEventListener('click', () => {
       navigator
-        .share({ files: [file], title: result.title, text: `${quiz.title} I'm ${result.title}. ${location.href}` })
+        .share({ files: [file], title: result.title, text: `${quiz.title} I'm ${result.title}. ${quizUrl}` })
         .catch((error) => {
           if (error.name === 'AbortError') return;
           announce('Sharing got stuck at the trailhead. Download the postcard instead; it travels light.');
@@ -65,27 +68,34 @@ async function preparePostcard(quiz, result) {
 
 copyButton.addEventListener('click', async () => {
   try {
-    await navigator.clipboard.writeText(location.href);
-    announce('Link copied.');
+    await navigator.clipboard.writeText(quizUrl);
+    announce('Quiz link copied.');
   } catch {
-    announce('The link slipped through our fingers. Copy it from the address bar instead.');
+    announce(`The link slipped through our fingers. Here it is to copy by hand: ${quizUrl}`);
   }
 });
 
 async function start() {
-  if (!resultId) {
+  if (!quizId) {
     throw new NotFoundError("There's no result here, just an empty campsite. Take a quiz to pitch one.");
   }
 
-  const result = await getResult(resultId);
-  const quiz = await getQuiz(result.quiz_id);
+  const resultId = readEarnedResult(quizId);
+  if (!resultId) {
+    throw new NotFoundError(
+      "No peeking at the summit before the climb. Results are earned on the trail, " +
+        'so take the quiz to find yours.',
+    );
+  }
+
+  const [result, quiz] = await Promise.all([getResult(resultId), getQuiz(quizId)]);
 
   kicker.textContent = quiz.title;
   title.textContent = result.title;
   description.textContent = result.description;
   image.src = resultImageUrl(result);
   image.alt = `Illustration for ${result.title}.`;
-  retake.href = `play.html?quiz=${result.quiz_id}`;
+  retake.href = quizUrl;
   document.title = `${result.title} — ${quiz.title} — Broke Compass`;
 
   article.hidden = false;
